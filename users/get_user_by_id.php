@@ -13,6 +13,8 @@
     if ($conn->query($sql) !== FALSE) {
         $result = $conn->query($sql);
         echo "User retrieved successfully! <br>";
+        echo "User retrieved successfully! <br>";
+        echo "User retrieved successfully! <br>";
         while ($row = $result->fetch_assoc()) {
             echo "User ID: " . htmlspecialchars($row['id']) . "<br>";
             echo "Username: " . htmlspecialchars($row['name']) . "<br>";
