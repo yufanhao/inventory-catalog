@@ -6,6 +6,7 @@
         </h1>
 
         <?php
+        include '../db.php';
         $result = $conn->query("SELECT * FROM users");
 
         echo "<table border='1' cellpadding='8'>";
