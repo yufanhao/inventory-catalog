@@ -14,7 +14,7 @@
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['id']) .'</a></td>';
-            echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) .'</a></td>';
+            echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['username']) .'</a></td>';
             echo "<td>" . htmlspecialchars($row['email']) .'</td>';
             echo "</tr>";
         }
