@@ -16,6 +16,7 @@
             echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['id']) .'</a></td>';
             echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['username']) .'</a></td>';
             echo "<td>" . htmlspecialchars($row['email']) .'</td>';
+            echo "<td><a href='delete_user.php?id=" . $row['id'] . "'>Delete User</a></td>";
             echo "</tr>";
         }
 

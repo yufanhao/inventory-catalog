@@ -7,7 +7,7 @@
         die("Connection failed: ". $conn->connect_error);
     }
 
-    $id =  $_POST["id"];
+    $id =  $_GET["id"];
     $sql = "DELETE from users WHERE id = $id";
 
     if ($conn->query($sql) === TRUE) {

@@ -27,7 +27,7 @@
             echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) .'</td>';
             echo "<td>" . htmlspecialchars($row['category']) .'</a></td>';
             echo "<td>" . htmlspecialchars($row['image_url']) .'</a></td>';
-            echo "<td>" . htmlspecialchars($row['expiration']) .'</a></td>';
+            echo "<td>" . htmlspecialchars(string: $row['expiration']) .'</a></td>';
             echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
             echo "</tr>";
         }
