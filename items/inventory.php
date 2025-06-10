@@ -27,14 +27,14 @@
         while ($row = $result->fetch_assoc()) {
             $item_id = $row['id'];
             $box_id_sql = "SELECT box_id FROM item_box_join WHERE item_id = $item_id";
-            $result = $conn->query($box_id_sql);
-            $row = $result->fetch_assoc();
-            $box_id = $row["box_id"];
+            $res = $conn->query($box_id_sql);
+            $row2 = $res->fetch_assoc();
+            $box_id = $row2["box_id"];
 
             $box_number_sql = "SELECT number FROM boxes WHERE id = $box_id";
-            $result = $conn->query($box_number_sql);
-            $row = $result->fetch_assoc();
-            $box_number = $row["number"];
+            $res = $conn->query($box_number_sql);
+            $row2 = $res->fetch_assoc();
+            $box_number = $row2["number"];
 
             echo "<tr>";
             echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['id'] .'</a></td>';

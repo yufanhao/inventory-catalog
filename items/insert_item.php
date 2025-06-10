@@ -1,6 +1,6 @@
 <html>
     <?php
-    require_once(__DIR__ . '/../db.php');
+    require_once('../db.php');
 
     $name =  $_POST["name"];
     $category = $_POST["category"];
@@ -33,14 +33,12 @@
         $sql = "INSERT INTO items (name, category, image_url, expiration) VALUES ('$name', '$category', '$image_url', '$expiration')";
         if ($conn->query($sql) === TRUE ) {
             $item_id = $conn->insert_id;
-            echo $item_id . "item";
             $sql = "SELECT id FROM boxes ORDER BY id DESC LIMIT 1";
             $result = $conn->query($sql);
 
             if ($result && $row = $result->fetch_assoc()) {
                 $box_id = $row['id'];
             }
-            echo $box_id . "box";
 
             $joinsql = "INSERT INTO item_box_join (item_id, box_id) VALUES ('$item_id', '$box_id')";
             if ($conn->query($joinsql) === TRUE) {
