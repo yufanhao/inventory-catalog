@@ -1,16 +1,13 @@
 <html>
     <?php
-    $conn = new mysqli("localhost", "root", "Poopcorn2005$","inventory_db");
-
-    if ($conn->connect_error) {
-        die("Connection failed: ". $conn->connect_error);
-    }
+    require_once(__DIR__ . '/../db.php');
 
     $name =  $_POST["name"];
     $category = $_POST["category"];
     $image_url = $_POST["image_url"];
     $expiration = $_POST["expiration"];
     $box_number = $_POST["box_number"];
+    $box_id = $_POST["box_id"];
 
     $box_check_sql = "SELECT * FROM boxes WHERE number = '$box_number'";
     $box_check_result = $conn->query($box_check_sql);
@@ -33,13 +30,25 @@
         exit();
     }
     else {
-        $item_id = $conn->insert_id;
-        $box_id_sql = "SELECT id FROM boxes WHERE box_number = '$box_number'";
-        $box_id = $conn->query($box_id_sql);
         $sql = "INSERT INTO items (name, category, image_url, expiration) VALUES ('$name', '$category', '$image_url', '$expiration')";
-        $joinsql = "INSERT INTO item_box_join (item_id, box_id) VALUES ('$item_id', '$box_id')";
-        if ($conn->query($sql) === TRUE && $conn->query($joinsql) === TRUE) {
-            echo "New item entered successfully <br>";
+        if ($conn->query($sql) === TRUE ) {
+            $item_id = $conn->insert_id;
+            echo $item_id . "item";
+            $sql = "SELECT id FROM boxes ORDER BY id DESC LIMIT 1";
+            $result = $conn->query($sql);
+
+            if ($result && $row = $result->fetch_assoc()) {
+                $box_id = $row['id'];
+            }
+            echo $box_id . "box";
+
+            $joinsql = "INSERT INTO item_box_join (item_id, box_id) VALUES ('$item_id', '$box_id')";
+            if ($conn->query($joinsql) === TRUE) {
+                echo "New item entered successfully <br>";
+            }
+            else {
+            echo "Error: " . $conn->error;
+        }
         } else {
             echo "Error: " . $conn->error;
         }

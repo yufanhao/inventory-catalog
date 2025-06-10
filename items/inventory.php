@@ -6,7 +6,7 @@
         </h1>
         
         <h2>Add new item:</h2>
-        <form action="insert_item.php" method="POST">i l
+        <form action="insert_item.php" method="POST">
             Name: <input type="text" name="name"><br>
             Category: <input type="text" name="category"><br>
             Image: <input type="text" name="image_url"><br>
@@ -26,12 +26,15 @@
         echo "<tr><th>ID</th><th>Name</th><th>Category</th><th>Image</th><th>Expiration</th><th>Box Number</th><th>Cabinet Number</th></tr>";
         while ($row = $result->fetch_assoc()) {
             $item_id = $row['id'];
-            echo $item_id;
             $box_id_sql = "SELECT box_id FROM item_box_join WHERE item_id = $item_id";
-            $box_id = $conn->query($box_id_sql);
+            $result = $conn->query($box_id_sql);
+            $row = $result->fetch_assoc();
+            $box_id = $row["box_id"];
 
             $box_number_sql = "SELECT number FROM boxes WHERE id = $box_id";
-            $box_number = $conn->query($box_number_sql);
+            $result = $conn->query($box_number_sql);
+            $row = $result->fetch_assoc();
+            $box_number = $row["number"];
 
             echo "<tr>";
             echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['id'] .'</a></td>';

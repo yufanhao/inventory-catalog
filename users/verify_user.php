@@ -1,10 +1,6 @@
 <html>
     <?php
-    $conn = new mysqli("localhost", "root", "Poopcorn2005$","inventory_db");
-
-    if ($conn->connect_error) {
-        die("Connection failed: ". $conn->connect_error);
-    }
+    require_once(__DIR__ . '/../db.php');
 
     $username =  $_GET["username"];
     $password = $_GET["password"];
