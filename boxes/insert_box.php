@@ -15,7 +15,22 @@
     $cabinet_number = $_POST["cabinet_number"];
 
     $cabinet_id_sql = "SELECT id FROM cabinets WHERE cabinet_number = '$cabinet_number'";
-    $cabinet_id = $conn->query($cabinet_id_sql);
+    $result = $conn->query($cabinet_id_sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $cabinet_id = $row['id'];
+    } else {
+        echo "Cabinet number does not exist. Please create a cabinet first.";
+        echo "<form action ='../cabinets/insert_cabinet.php' method = 'post'>
+              Cabinet Number: <input type='text' name='cabinet_number'><br>
+              <button type = 'submit'>Create Cabinet</button>
+              </form>";
+        echo "<form action ='../items/inventory.php' method = 'get'>
+              <button type = 'submit'>Return to Inventory</button>
+              </form>";
+        $conn->close();
+        exit();
+    }
 
     $box = $conn->query("SELECT * from boxes WHERE box_number='$box_number'");
     
