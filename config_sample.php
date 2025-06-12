@@ -1,7 +1,7 @@
 <?php
 return array(
-    'HOSTNAME' => 'Ahmed Hamiroune',
-    'USERNAME' => 'AHamiroune',
-    'PASSWORD' => '1234567890',
-    'DB'       => 'inventory_db'
+    'HOSTNAME' => 'YOUR_HOSTNAME',
+    'USERNAME' => 'YOUR_USERNAME',
+    'PASSWORD' => 'YOUR_PASSWORD',
+    'DB'       => 'YOUR_DATABASE_NAME'
 );
