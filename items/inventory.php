@@ -14,6 +14,10 @@
         <a href="add_new_item.php">
             <button>Add new item</button>
         </a>
+
+        <a href="../locations/insert_location.php">
+            <button>Add new storage location</button>
+        </a>
             
         <h2>Item list:</h2>
 
