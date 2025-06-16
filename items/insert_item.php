@@ -24,7 +24,7 @@
                 </form>";
 
         echo "<form action ='inventory.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button>
+                <button type = 'submit'>Cancel and Return to Inventory</button>
                 </form>";
         $conn->close();
         exit();

@@ -18,7 +18,7 @@
     if ($result->num_rows > 0) {
         echo "That cabinet already exists";
             echo "<form action ='../items/inventory.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button>
+                <button type = 'submit'>Cancel and Return to Inventory</button>
                 </form>";
         $conn->close();
         exit();

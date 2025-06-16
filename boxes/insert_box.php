@@ -27,7 +27,7 @@
                 <button type = 'submit'>Create Cabinet</button>
               </form>";
         echo "<form action ='../items/inventory.php' method = 'get'>
-              <button type = 'submit'>Return to Inventory</button>
+              <button type = 'submit'>Cancel and Return to Inventory</button>
               </form>";
         $conn->close();
         exit();
@@ -39,7 +39,7 @@
         if ($box->num_rows > 0) {
             echo "That box already exists";
             echo "<form action ='../items/inventory.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button>
+                <button type = 'submit'>Cancel and Return to Inventory</button>
                 </form>";
         }
         else {

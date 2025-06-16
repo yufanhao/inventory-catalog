@@ -2,8 +2,24 @@
 <html>
     <body>
         <h1>
-            Users
+            List of Users
         </h1>
+
+        <h2>
+            Change page directory:
+        </h2>
+
+        <a href="../welcome_page.php">
+            <button>Return to welcome page</button>
+        </a>
+
+        <a href="../sign_up.php">
+            <button>Add a new user</button>
+        </a>
+
+        <h2>
+            Users:
+        </h2>
 
         <?php
         include '../db.php';

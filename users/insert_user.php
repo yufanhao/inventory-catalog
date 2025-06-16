@@ -20,8 +20,8 @@
         } else {
             echo "Error: " . $conn->error;
         }
-        echo "<form action ='../items/inventory.php' method = 'get'>
-              <button type = 'submit'>See Inventory</button>
+        echo "<form action ='../welcome_page.php' method = 'get'>
+              <button type = 'submit'>See Welcome Page</button>
               </form>";
 
         $conn->close();
