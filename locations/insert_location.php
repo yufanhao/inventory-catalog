@@ -1,6 +1,6 @@
 <html>
     <form action="" method="POST">
-        Storage Unit Type: 
+        Location Type: 
         <select name="type">
             <option value="cabinet">Cabinet</option>
             <option value="box">Box</option>
@@ -46,7 +46,8 @@
                         <option value='1'>1</option>
                         <option value='2'>2</option>
                         <option value='3'>3</option>
-                    Description/Notes<input type='text' name='description'><br>
+                        </select><br>
+                    Description/Notes: <input type='text' name='description'><br>
                     <input type='hidden' name='parent_type' value='ancestor'>
                     <button type = 'submit'>Create Floor</button>
                 </form>";
@@ -66,20 +67,15 @@
         $number = $_POST["number"];
         $description = $_POST["description"];
         $parent_number = $_POST["parent_number"];
-        if ($parent_number == "") {
+        if ($parent_type == "ancestor") {
             $parent_number = 0;
         }
-        
-        echo "number: $number <br>";
-        echo "description: $description <br>";
-        echo "parent_number: $parent_number <br>";
 
         check_location_exists($conn, $number, $type);
 
         if ($parent_number != 0) {
             $parent_id = get_parent_id($conn, $parent_number, $parent_type);
-            if ($parent_id != null) {
-                echo "Parent location does not exist. Please create a $parent_type first.";
+            if ($parent_id == null) {
                 echo "<form action ='../locations/insert_location.php' method = 'get'>
                     <button type = 'submit'>Create Location</button>
                     </form>";
@@ -104,7 +100,6 @@
             </form>";
         $conn->close();
     }
-    echo "ran";
 
     function check_location_exists($conn, $number, $type) {
         $sql = "SELECT * FROM locations WHERE number = '$number' AND type = '$type'";
@@ -126,6 +121,7 @@
             $row = $result->fetch_assoc();
             return $row['id'];
         } else {
+            echo "Parent location does not exist. Please create it first.";
             return null;
         }
     }
