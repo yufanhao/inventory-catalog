@@ -1,0 +1,26 @@
+head {
+  color: purple;
+}
+h1 {
+    border-style: none ;
+    color: black;
+    background-color: #59c3e7;
+    font-weight: normal;
+}
+
+table, th, td {
+  border: 1px black;
+  background-color: #d7eff6;
+  text-align: center;
+}
+
+img {
+  width: 50px; height: 50px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
