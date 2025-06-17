@@ -7,22 +7,24 @@
     <body>
         <h1>Inventory</h1>
         
-        <h2>Add new item:</h2>
-        <form action="insert_item.php" method="POST">
-            Name: <input type="text" name="name"><br>
-            Category: <input type="text" name="category"><br>
-            Image: <input type="file" id="fileInput" name="image_url"><br>
-            Expiration: <input type="text" name="expiration"><br>
-            Location: <input type="number" name="location"><br>
-            <input type="submit">
-        </form>
-        <p></p>
-        <form action="bulk_insert.php" method="POST">
-            Add items in bulk from a file spreadsheet: 
-            <input type="file" id="fileInput" name="table_file"><br>
-            <input type="submit">
-        </form>
-        <p></p>
+        <h2>Change page directory:</h2>
+
+        <a href="../welcome_page.php">
+            <button>Return to welcome page</button>
+        </a>
+
+        <a href="add_new_item.php">
+            <button>Add new item</button>
+        </a>
+
+        <a href="../locations/insert_location.php">
+            <button>Add new storage location</button>
+        </a>
+
+        <a href="../locations/locations.php">
+            <button>View locations</button>
+        </a>
+            
         <h2>Item list:</h2>
         <?php
         include '../db.php';

@@ -11,8 +11,8 @@
         $user = $result->fetch_assoc();
         if ($password == $user['password']) {
             echo "Login successful! <br>";
-             echo "<form action ='../items/inventory.php' method = 'get'>
-              <button type = 'submit'>See Inventory</button>
+             echo "<form action ='../welcome_page.php' method = 'get'>
+              <button type = 'submit'>Continue to Main Page</button>
               </form>";
         }
         else { 

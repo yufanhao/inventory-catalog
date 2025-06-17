@@ -14,7 +14,11 @@
             echo "Name: " . htmlspecialchars($row['name']) . "<br>";
             echo "Category: " . htmlspecialchars($row['category']) . "<br>";
             echo "Expiration: " . htmlspecialchars($row['expiration']) . "<br>";
-            echo "Image: " . htmlspecialchars($row['image_url']) . "<br>";
+            echo "Image: " . htmlspecialchars($row['image_url']) . "<br><br>";
+
+            echo "<form action ='inventory.php' method = 'get'>
+                 <button type = 'submit'>Return to Inventory</button>
+                 </form>";
         }         
     } else {
         echo "Error: " . $conn->error;
