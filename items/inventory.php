@@ -75,7 +75,8 @@
             echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
             echo "</tr>";
         }
-    $conn->close()
-?>
-</body>
+        
+        $conn->close()
+        ?>
+    </body>
 </html>
