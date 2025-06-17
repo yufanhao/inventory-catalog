@@ -1,6 +1,7 @@
-﻿name,category,image_url,expiration,box_number,quantity
-Box2,Cable,C:\wamp\www\inventory-catalog\items\me.jpeg,26,4,4
-Xob2,CPU,C:\wamp\www\inventory-catalog\items\sun.jpeg,34,1,5
-Box3,Cable,C:\wamp\www\inventory-catalog\items\me.jpeg,26,4,2
-Xob3,CPU,C:\wamp\www\inventory-catalog\items\sun.jpeg,34,1,3
-Bob,Jeff,,57,3,1
+﻿name,category,image_url,expiration,box_number
+Box2,Cable,C:\wamp\www\inventory-catalog\items\me.jpeg,26,4
+Xob2,CPU,C:\wamp\www\inventory-catalog\items\sun.jpeg,34,1
+Box3,Cable,C:\wamp\www\inventory-catalog\items\me.jpeg,26,4
+Xob3,CPU,C:\wamp\www\inventory-catalog\items\sun.jpeg,34,1
+Bob,Jeff,,57,3
+Bob,Jeff,,57,3
