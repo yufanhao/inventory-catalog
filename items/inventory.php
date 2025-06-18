@@ -24,11 +24,19 @@
         <a href="../locations/locations.php">
             <button>View locations</button>
         </a>
+
+        <a href="../models/insert_model.php">
+            <button>Add new model</button>
+        </a>
+
+        <a href="../models/models.php">
+            <button>View models</button>
+        </a>
             
         <h2>Item list:</h2>
         <?php
         include '../db.php';
-        $result = $conn->query("SELECT * FROM items order by name");
+        $result = $conn->query("SELECT * FROM model order by name");
 
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Model Name</th><th>Category</th><th>Image</th><th>Expiration</th><th>Location</th><th>Quantity</th><th>Delete Item</th></tr>";
@@ -52,14 +60,14 @@
             $box_id = $row2['box_id'];
 
             
-            $box_number_sql = "SELECT number FROM boxes WHERE id = $box_id";
+            $box_number_sql = "SELECT number FROM locations WHERE id = $box_id";
             
 
             $res2 = $conn->query($box_number_sql);
             $row2 = $res2->fetch_assoc();
 
             $quantity_id = $row['name'];
-            $quantity_sql = "SELECT distinct name, COUNT('id') AS quantity FROM items WHERE name = '$quantity_id' group by name" ;
+            $quantity_sql = "SELECT distinct name, COUNT('id') AS quantity FROM model WHERE name = '$quantity_id' group by name" ;
             $res3 = $conn->query($quantity_sql);
             $row3 = $res3->fetch_assoc();
             $quantity_id = $row3[1];
