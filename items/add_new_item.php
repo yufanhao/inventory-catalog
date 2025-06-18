@@ -3,7 +3,13 @@
         <form action="insert_item.php" method="POST">
             Name: <input type="text" name="name"><br>
             Expiration: <input type="text" name="expiration"><br>
-            <!-- Box Number: <input type="number" name="box_number"><br>-->
+            Location Type: <select name="location_type">
+                <option value="box">Box</option>
+                <option value="cabinet">Cabinet</option>
+                <option value="shelf">Shelf</option>
+                <option value="floor">Floor</option>
+                <option value="other">Other</option></select><br>
+            Location Number(i.e. box number, etc): <input type="number" name="number"><br>
             <input type="submit">
         </form>
 

@@ -2,8 +2,8 @@
     <form action="" method="POST">
         Location Type: 
         <select name="type">
-            <option value="cabinet">Cabinet</option>
             <option value="box">Box</option>
+            <option value="cabinet">Cabinet</option>
             <option value="shelf">Shelf</option>
             <option value="floor">Floor</option>
             <option value="other">Other</option></select><br>
