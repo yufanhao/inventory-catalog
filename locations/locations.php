@@ -23,7 +23,8 @@
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>ID</th><th>Type</th><th>Number/Name</th><th>Description</th><th>Parent ID</th></tr>";
         while ($row = $result->fetch_assoc()) {
-            
+
+        
             echo "<tr>";
             echo "<td>" . $row['id'] .'</td>';
             echo "<td>" . $row["type"] .'</td>';

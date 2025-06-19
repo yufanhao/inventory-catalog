@@ -3,6 +3,7 @@
     require_once('../db.php');
 
     $id =  $_GET["id"];
+    //$name =  $_GET["name"];
     $sql = "DELETE from items WHERE id = $id";
 
     if ($conn->query($sql) === TRUE) {

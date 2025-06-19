@@ -10,29 +10,31 @@ if ($fileHandle === false) {
 }
 
 // skip headers line
-fgetcsv($fileHandle); //TODO: keep if want xls to have headers.
+fgetcsv($fileHandle); //keep if want xls to have headers.
 while (($row = fgetcsv($fileHandle)) !== false) {
     $name =  $row[0];
     $category = $row[1];
-    $image_url = $row[2];
+    $image_url = $row[2]; 
     $expiration = $row[3];
     $box_number = $row[4]; 
     $quantity = $row[5];
 
-    $sql = "INSERT INTO items (name, category, image_url, expiration) VALUES ('$name', '$category', '$image_url', '$expiration')";
+    $sql = "INSERT INTO items (name, expiration) VALUES ('$name', '$expiration')";
     if ($conn->query($sql) === TRUE ) {
         $item_id = $conn->insert_id;
 
+        //TODO: move to new add_location() function?
         // if new box, add it to boxes table.
-        $sql = "SELECT id FROM boxes ORDER BY id DESC LIMIT 1";
+        $sql = "SELECT id FROM locations ORDER BY id DESC LIMIT 1";
         $result = $conn->query($sql);
-        if ($result && $row = $result->fetch_assoc()) {
+        if ($result = $result->fetch_assoc()) {
             $box_id = $row['id'];
         }
 
+        //$modelsql = "INSERT INTO model (name, category, image) VALUES ('$name', '$category', '$image_url')";
         $joinsql = "INSERT INTO item_box_join (item_id, box_id) VALUES ('$item_id', '$box_id')";
-        if ($conn->query($joinsql) === TRUE) {
-        echo "New item entered successfully <br>";
+         if ($joinsql !== FALSE) {
+            echo "New item entered successfully <br>";
         }
         else {
             echo "Error: " . $conn->error;

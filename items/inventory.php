@@ -28,10 +28,6 @@
         <a href="../models/insert_model.php">
             <button>Add new model</button>
         </a>
-
-        <a href="../models/models.php">
-            <button>View models</button>
-        </a>
             
         <h2>Item list:</h2>
         <?php
@@ -48,8 +44,11 @@
 
             echo "<tr>";
             echo "<td><a href='get_item_by_name.php?name=" . $row['name'] . "'>" . $row['name'] ."</td>";
+
             echo '<td> <img src="' . $row["image_url"] .'"width="75" height="75" > </td>';
             echo "<td>" . $count['quantity'] ."</td>";
+            
+            //echo "<td>" . $row["expiration"] ."</td>";
             echo "</tr>";
         }
         
