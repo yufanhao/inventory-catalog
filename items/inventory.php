@@ -1,9 +1,8 @@
-<head>
-    <title>Item Catalog</title>
-    <link rel="stylesheet" href = "../styles.css">
-</head>
-
 <html>
+    <head>
+        <title>Item Catalog</title>
+        <link rel="stylesheet" href = "../styles.css">
+    </head>
     <body>
         <h1>Inventory</h1>
         
@@ -29,12 +28,22 @@
             <button>Add new model</button>
         </a>
             
+        <form method = "GET" action = "">
+            <input type="text" name = "search" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <button type = "submit">Search</button>
+
         <h2>Item list:</h2>
         <?php
         include '../db.php';
+        $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
         // Gets unique item names and their minimum ID for deletion
-        $items = $conn->query("SELECT name, MIN(id) AS id FROM items GROUP BY name");
+        if ($search !== "") {
+            $items = $conn->query("SELECT name, MIN(id) AS id, MIN(image_url) AS image_url FROM items WHERE name like '%$search%' GROUP BY name");
+        } else {
+            $items = $conn->query("SELECT name, MIN(id) AS id, MIN(image_url) AS image_url FROM items GROUP BY name");
+        }
 
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Name</th><th>Image</th><th>Quantity</th></tr>";
@@ -43,7 +52,7 @@
             $count = $conn->query("SELECT COUNT(*) as quantity FROM items WHERE name = '" . $row['name'] . "'")->fetch_assoc();
 
             echo "<tr>";
-            echo "<td><a href='get_item_by_name.php?name=" . $row['name'] . "'>" . $row['name'] ."</td>";
+            echo "<td><a href='get_item_by_name.php?name=" . $row['name'] . "'>" . $row['name'] ."</td></a>";
 
             echo '<td> <img src="' . $row["image_url"] .'"width="75" height="75" > </td>';
             echo "<td>" . $count['quantity'] ."</td>";
@@ -52,7 +61,7 @@
             echo "</tr>";
         }
         
-        $conn->close()
+        $conn->close();
         ?>
     </body>
 </html>
