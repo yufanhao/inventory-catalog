@@ -7,6 +7,7 @@
 
     $name = $_GET["name"];
     echo"<h2>".$name."</h2>";
+    $flag = FALSE;
 
     $items = $conn->query("SELECT * FROM items WHERE name = '$name'");
     echo "<table border='1' cellpadding='8'>";
@@ -25,9 +26,10 @@
         );
 
         // Traverse up the location hierarchy to get all location types and numbers
-        while ($location_type != 'ancestor') {
+        while ($location_type != 'ancestor' AND $flag == FALSE) {
             if (!$location) {
                 echo "Location not found for item: " . $row['name'] . ". Please check the database.";
+                $flag = TRUE;
                 break;
             }
 
@@ -54,8 +56,8 @@
         echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
         echo "</tr>";
     }
-    echo "<form action ='inventory.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button>
+    echo "<br><form action ='inventory.php' method = 'get'>
+                <button type = 'submit'>Return to Inventory</button><br><br>
                 </form>";
 
     $conn->close();
