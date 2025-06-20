@@ -4,7 +4,7 @@
             Name: <input type="text" name="name"><br>
             Category: <input type="text" name="category"><br>
             Image: <input type="file" id="fileInput" name="image_url" width="50" height="50"><br>
-            Expiration: <input type="text" name="expiration"><br>
+            Expiration: <input type="date" name="expiration"><br>
             Location Type: <select name="location_type">
                 <option value="box">Box</option>
                 <option value="cabinet">Cabinet</option>

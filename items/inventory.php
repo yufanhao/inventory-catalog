@@ -26,14 +26,18 @@
 
         <a href="../models/insert_model.php">
             <button>Add new model</button>
-        </a>
+        </a><br>
             
+        <h2>Item list:</h2>
+
         <form method = "GET" action = "">
             <input type="text" name = "search" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
             <button type = "submit">Search</button>
+            <a href="search.php"><button type = "button">Advanced Search/Filter</button></a>
+        </form>
 
-        <h2>Item list:</h2>
+
         <?php
         include '../db.php';
         $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
@@ -45,7 +49,7 @@
             $items = $conn->query("SELECT name, MIN(id) AS id, MIN(image_url) AS image_url FROM items GROUP BY name");
         }
 
-        echo "<table border='1' cellpadding='8'>";
+        echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
         echo "<tr><th>Name</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
             // Counts the quantity of each item by name
