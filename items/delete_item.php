@@ -7,7 +7,7 @@
     $sql = "DELETE from items WHERE id = $id";
 
     if ($conn->query($sql) === TRUE) {
-        echo "User deleted successfully";
+        echo "Item deleted successfully";
         echo "<form action ='../items/inventory.php' method = 'get'>
               <button type = 'submit'>Return to Inventory</button>
               </form>";
