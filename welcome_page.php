@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <h1>Welcome to the inventory management site! What would you like to do?</h1>
+        <h1>Welcome to the inventory management site!</h1>
         
         <h2>What would you like to do?</h2>
 
