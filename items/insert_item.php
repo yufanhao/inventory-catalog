@@ -4,6 +4,8 @@
 
     $name =  $_POST["name"];
     $category = $_POST["category"];
+    $part_number = $_POST["part_number"];
+    $serial_number = $_POST["serial_number"];
     $image_url = $_POST["image_url"];
     $expiration = $_POST["expiration"];
     $location_type = $_POST["location_type"];
@@ -27,7 +29,8 @@
         
         $location = $location_check_result->fetch_assoc();
         $location_id = $location["id"];
-        $sql = "INSERT INTO items (name, category, image_url, expiration, location_id) VALUES ('$name', '$category', '$image_url', '$expiration', '$location_id')";
+        $sql = "INSERT INTO items (name, category, part_number, serial_number, image_url, expiration, location_id) 
+                VALUES ('$name', '$category', '$part_number', '$serial_number', '$image_url', '$expiration', '$location_id')";
         if ($conn->query($sql) === TRUE ) {
             echo "New item entered successfully <br>";
         } else {

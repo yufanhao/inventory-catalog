@@ -3,6 +3,8 @@
         <form action="insert_item.php" method="POST">
             Name: <input type="text" name="name"><br>
             Category: <input type="text" name="category"><br>
+            Part Number: <input type="text" name="part_number"><br>
+            Serial Number: <input type="text" name="serial_number"><br>
             Image: <input type="file" id="fileInput" name="image_url" width="50" height="50"><br>
             Expiration: <input type="date" name="expiration"><br>
             Location Type: <select name="location_type">
