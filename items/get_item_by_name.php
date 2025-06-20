@@ -36,7 +36,6 @@
 
             $parent_id = $location['parent_id'];
             $parent_sql = "SELECT * FROM locations WHERE id = $parent_id";
-            echo $location_id . ': '.  $parent_sql .'<br>';
             $parent = $conn->query($parent_sql)->fetch_assoc();
             $location = $parent;
             $location_type = $location["type"];
