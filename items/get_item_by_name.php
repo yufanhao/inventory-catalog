@@ -27,7 +27,7 @@
         // Traverse up the location hierarchy to get all location types and numbers
         while ($location_type != 'ancestor') {
             if (!$location) {
-                echo "Location not found for item: " . $row['name'] . ". Please check the database.";
+                //echo "Location not found for item: " . $row['name'] . ". Please check the database.";
                 break;
             }
 
@@ -36,16 +36,17 @@
 
             $parent_id = $location['parent_id'];
             $parent_sql = "SELECT * FROM locations WHERE id = $parent_id";
-            echo $location_id . ': '.  $parent_sql .'<br>';
+            //echo $location_id . ': '.  $parent_sql .'<br>';
             $parent = $conn->query($parent_sql)->fetch_assoc();
+            
             $location = $parent;
             $location_type = $location["type"];
         }
 
         echo "<tr>";
         echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['name'] ."</td>";
-        echo "<td>" . $row['category'] ."</td>";
-        echo '<td> <img src="' . $row["image_url"] .'"width="75" height="75" > </td>';
+        //echo "<td>" . $row['category'] ."</td>";
+        echo '<td> <img src="' . $row["image_url"] .'" width="75" height="75" > </td>';
         echo "<td>" . $row['expiration'] ."</td>";
         echo "<td>" . $location_array['box'] . "</td>";
         echo "<td>". $location_array["cabinet"] ."</td>";

@@ -1,6 +1,7 @@
 <html>
     <?php
     require_once('../db.php');
+    require_once('upload_file.php');
 
     $name =  $_POST["name"];
     $category = $_POST["category"];
@@ -9,6 +10,14 @@
     $location_type = $_POST["location_type"];
     $location_number = $_POST["number"];
  
+    // upload image file before trying to store it into tables.
+    //echo 'inside';
+    $uploaded_image = upload_file("image_url", 
+            $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
+    //echo $uploaded_image;
+  
+        // process other fields...
+
     $location_check_sql = "SELECT * FROM locations WHERE number = '$location_number' && type = '$location_type'";
     $location_check_result = $conn->query($location_check_sql);
     if ($location_check_result->num_rows <= 0) {
@@ -21,13 +30,12 @@
                 </form>";
         exit();
     }
-    else {
-        //TODO: upload image_url to /images folder on the server, then stora $base_file_name only.
-        // display can assume files are always in the /images folder.
-        
+    else {  
         $location = $location_check_result->fetch_assoc();
         $location_id = $location["id"];
-        $sql = "INSERT INTO items (name, category, image_url, expiration, location_id) VALUES ('$name', '$category', '$image_url', '$expiration', '$location_id')";
+        $sql = "INSERT INTO items (name, category, image_url, expiration, location_id) VALUES ('$name', '$category', '$uploaded_image', '$expiration', '$location_id')";
+        
+
         if ($conn->query($sql) === TRUE ) {
             echo "New item entered successfully <br>";
         } else {
