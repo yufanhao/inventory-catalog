@@ -51,7 +51,6 @@
                     <input type='hidden' name='parent_type' value='ancestor'>
                     <button type = 'submit'>Create Floor</button>
                 </form>";
-            $parent_type = "ancestor"; // Ancestor is the top-level location
         } else if ($type == "other") {
             echo "Other Location Type: <input type='text' name='other_type'><br>
                     Description/Notes<input type='text' name='description'><br>
