@@ -27,5 +27,7 @@
         $conn->close();
     }
     ?>
-    
+    <a href="../welcome_page.php">
+            <button>Return to welcome page</button>
+        </a>    
 </html>

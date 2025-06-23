@@ -40,7 +40,7 @@
             echo "</tr>";
         }
         echo "</table>";
-        
+         
         // This includes all descendants of the current location
         $child_ids = getChildLocationIds($conn, $location_id);
         $items = $conn->query("SELECT name, MIN(id) AS id FROM items WHERE location_id IN (" . implode(',', $child_ids) . ") GROUP BY name");

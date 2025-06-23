@@ -14,7 +14,7 @@
             <input type="submit">
         </form>
 
-        <form action="bulk_insert.php" method="POST">
+        <form action="bulk_insert_item.php" method="POST">
             Add items in bulk from a file spreadsheet: 
             <input type="file" id="fileInput" name="table_file"><br>
             <input type="submit">

@@ -12,14 +12,21 @@ if ($fileHandle === false) {
 // skip headers line
 fgetcsv($fileHandle); //keep if want xls to have headers.
 while (($row = fgetcsv($fileHandle)) !== false) {
+    /*
     $name =  $row[0];
     $category = $row[1];
     $image_url = $row[2]; 
     $expiration = $row[3];
     $box_number = $row[4]; 
-    $quantity = $row[5];
+    //$quantity = $row[5];
+    // */
 
-    $sql = "INSERT INTO items (name, expiration) VALUES ('$name', '$expiration')";
+    // format: DATE("year-month-day")
+    $serial_number = $row[0];
+    $expiration = DATE("2017-06-15");
+    $model_id = $row[1];
+
+    $sql = "INSERT INTO items (serial_number, expiration, model_id) VALUES ('$serial_number', '$expiration', '$model_id')";
     if ($conn->query($sql) === TRUE ) {
         $item_id = $conn->insert_id;
 

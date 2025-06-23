@@ -26,8 +26,9 @@
         );
 
         // Traverse up the location hierarchy to get all location types and numbers
-        while ($location_type != 'ancestor') AND $flag == FALSE){
-            if (!$location) {
+        // TODO: Check post merge - while ($location_type != 'ancestor' AND $flag == FALSE){
+        while (($location_type !== 'ancestor') && ($flag === FALSE)) {
+           if (!$location) {
                 echo "Location not found for item: " . $row['name'] . ". Please check the database.";
                 $flag = TRUE;
                 break;

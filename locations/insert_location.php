@@ -125,5 +125,7 @@
         }
     }
     ?>
-    
-</html>
+    <a href="../items/inventory.php">
+            <button>Return to Inventory Page</button>
+        </a>
+</html
