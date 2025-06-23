@@ -8,7 +8,7 @@
 
         <p>View or search the existing inventory:</p>
         
-        <a href="items/inventory.php">
+        <a href="models/view_models.php">
             <button>View inventory</button><br><br>
         </a>
 
