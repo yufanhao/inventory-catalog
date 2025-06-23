@@ -25,7 +25,7 @@
             <button>Return to welcome page</button>
         </a>
 
-        <a href="inventory.php">
+        <a href="../models/view_models.php">
             <button>View Inventory</button>
         </a>
 </html>

@@ -78,7 +78,7 @@
                 echo "<form action ='../locations/insert_location.php' method = 'get'>
                     <button type = 'submit'>Create Location</button>
                     </form>";
-                echo "<form action ='../items/inventory.php' method = 'get'>
+                echo "<form action ='../models/view_models.php' method = 'get'>
                     <button type = 'submit'>Cancel and Return to Inventory</button>
                     </form>";
                 $conn->close();
@@ -94,7 +94,7 @@
         } else {
             echo "Error: " . $conn->error;
         }
-        echo "<form action='../items/inventory.php' method='get'>
+        echo "<form action='../models/view_models.php' method='get'>
                 <button type = 'submit'>Return to Inventory</button>
             </form>";
         $conn->close();
@@ -105,7 +105,7 @@
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             echo "That location already exists";
-            echo "<form action ='../items/inventory.php' method = 'get'>
+            echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Return to Inventory</button>
                 </form>";
             $conn->close();
@@ -125,7 +125,7 @@
         }
     }
     ?>
-    <a href="../items/inventory.php">
+    <a href="../models/view_models.php">
             <button>Return to Inventory Page</button>
         </a>
 </html
