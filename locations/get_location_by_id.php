@@ -44,7 +44,7 @@
         // This includes all descendants of the current location
         $child_ids = getChildLocationIds($conn, $location_id);
         $items = $conn->query("SELECT name, MIN(id) AS id FROM items WHERE location_id IN (" . implode(',', $child_ids) . ") GROUP BY name");
-        echo "<h2>Items on this floor:</h2>";
+        echo "<h2>Items in this $location_type:</h2>";
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Name</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
