@@ -6,9 +6,8 @@
             Password: <input type="password" name="password"><br>
             <input type="submit">
         </form>
-        <a href="../welcome_page.php">
-            <!-- not working currently, plan to fix -->
-            <button>Return to welcome page</button>
+        <a href="welcome_page.php">
+            <button>Welcome page</button>
         </a>
     </body>
 </html>

@@ -8,7 +8,7 @@
             <option value="floor">Floor</option>
             <option value="other">Other</option></select><br>
         <button type="submit">Next</button>
-    </form>
+    </form> 
 
     <?php
     require_once('../db.php');
@@ -95,7 +95,7 @@
             echo "Error: " . $conn->error;
         }
         echo "<form action='../models/view_models.php' method='get'>
-                <button type = 'submit'>Return to Inventory</button>
+        <button type = 'submit'>Return to Inventory</button>
             </form>";
         $conn->close();
     }
