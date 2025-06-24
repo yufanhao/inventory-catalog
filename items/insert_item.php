@@ -3,17 +3,17 @@
     require_once('../db.php');
     //require_once('upload_file.php');
 
-    $sn =  $_POST["sn"];
-    $name =  $_POST["name"];
+    $serial_number =  $_POST["serial_number"];
+    $model_name =  $_POST["model_name"];
     $expiration =  $_POST["expiration"];
     $location_type =  $_POST["location_type"];
     $location_number =  $_POST["number"];
 
     // ensure valid model id
-    $model_check_sql = "SELECT id FROM models WHERE name = '$name'";
+    $model_check_sql = "SELECT id FROM models WHERE name = '$model_name'";
     $model_check_result = $conn->query($model_check_sql);
     if ($model_check_result->num_rows <= 0) {
-        echo "Model $name does not exist. Please create that model first.";
+        echo "Model $model_name does not exist. Please create that model first.";
         echo "<form action ='../models/add_new_model.php' method = 'get'>
                 <button type = 'submit'>Create Model</button> 
                 </form>";
@@ -47,7 +47,7 @@
     $model_id = $model_id['id'];
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id, location_id) 
-           VALUES ('$sn', '$expiration', '$model_id', '$location_id')";
+           VALUES ('$serial_number', '$expiration', '$model_id', '$location_id')";
    
         if ($conn->query($sql) === TRUE ) {
             echo "New item entered successfully <br>";

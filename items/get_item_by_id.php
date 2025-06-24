@@ -1,7 +1,7 @@
 <html>
     <?php
     require_once('../db.php');
-
+    require_once('../functions.php');
 
     $id =  $_GET["id"];
     $sql = "SELECT * from items WHERE id = $id";
@@ -18,17 +18,14 @@
             echo "Expiration: " . htmlspecialchars($row['expiration']) . "<br>";
             $location = fetch_row_data($conn, 'locations', $row['location_id'], 'number');
             $location_type = fetch_row_data($conn, 'locations', $row['location_id'], 'type');
-            echo "Location: " . htmlspecialchars($location_type." - ".$location) . "<br>";
-
-        //    echo "Category: " . htmlspecialchars($row['category']) . "<br>";
-        //    echo "Image: " . htmlspecialchars($row['image_url']) . "<br>";
+            echo "Location: <br>";
             echo 'Box: '. htmlspecialchars($location_array['box']) . "<br>";
             echo "Cabinet: ". htmlspecialchars($location_array['cabinet']) . "<br>";
             echo "Shelf: ". htmlspecialchars($location_array['shelf']) . "<br>";
             echo "Floor: ". htmlspecialchars($location_array['floor']) . "<br>";
             
             $name = htmlspecialchars($row['name']);
-            echo '<a href="get_item_by_name.php?name=' . $name . '">
+            echo '<a href="get_item_by_model_id.php?model_id=' . $row['model_id'] . '">
                   <button type="button">Return to Inventory</button>
                   </a>';
 

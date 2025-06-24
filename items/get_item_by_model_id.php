@@ -2,27 +2,28 @@
     <body>
     <h2>Filter Items:</h2>
     <form method = "GET" action = "">
-            Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>">
-            Expiration: <input type="date" name="expiration" disabled>
-            Before/After: <select name="before_after" disabled>
-                <option value="<=">Before</option>
-                <option value=">">After</option>
-            </select><br>
-            Location: <select name="location_type" disabled>
-                <option value="box">Box</option>
-                <option value="cabinet">Cabinet</option>
-                <option value="shelf">Shelf</option>
-                <option value="floor">Floor</option>
-                <option value="other">Other</option></select>
-            Number(i.e. box number, etc): <input type="number" name = "number" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['number']) ? htmlspecialchars($_GET['number']) : ''; ?>">
-            <input type="hidden" name="searched" value="searched">
-            <button type="submit">Search</button>
-        </form>
+        Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
+            "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>">
+        Expiration: <input type="date" name="expiration" disabled>
+        Before/After: <select name="before_after" disabled>
+            <option value="<=">Before</option>
+            <option value=">">After</option>
+        </select><br>
+        Location: <select name="location_type" disabled>
+            <option value="box">Box</option>
+            <option value="cabinet">Cabinet</option>
+            <option value="shelf">Shelf</option>
+            <option value="floor">Floor</option>
+            <option value="other">Other</option></select>
+        Number(i.e. box number, etc): <input type="number" name = "number" placeholder = "Search items..." value =
+            "<?php echo isset($_GET['number']) ? htmlspecialchars($_GET['number']) : ''; ?>">
+        <input type="hidden" name="searched" value="searched">
+        <button type="submit">Search</button>
+    </form>
 
 <?php
     include('../db.php');
+    include('../functions.php');
 
     //include 'item_utils.php';
     //$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';

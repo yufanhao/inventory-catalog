@@ -37,8 +37,8 @@
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
             Category: <input type="text" name = "category" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
-            Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>">
+            Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
             <button type = "submit">Search</button>
             <!--<a href="search_model.php"><button type = "button">Advanced Search/Filter</button></a>-->
@@ -51,12 +51,12 @@
         $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
-        $serial_number = isset($_GET['serial_number']) ? $conn->real_escape_string($_GET['serial_number']) : '';
+        $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
 
         if ($searched !== "") {
             $items = $conn->query("SELECT * FROM models
             WHERE name like '%$name%' AND category like '%$category%' 
-            AND serial_number like '%$serial_number%'
+            AND part_number like '%$part_number%'
             GROUP BY name");
         } else {
             $items = $conn->query("SELECT * FROM models");
@@ -65,15 +65,14 @@
         echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
         echo "<tr><th>Model Name</th><th>Serial Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
-            $items_sql = 'SELECT count(*) from items where model_id = ' . $row['id'];
-            $count = $conn->query($items_sql)->fetch_row();
+            $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
 
             echo "<tr>";
             echo "<td> <a href='../items/get_item_by_model_id.php?model_id=" . $row['id'] . "'>" . $row['name'] ."</td>";
-            echo "<td>" . $row["serial_number"]."</td>";
+            echo "<td>" . $row["part_number"]."</td>";
             echo "<td>" . $row["category"] ."</td>";
             echo '<td> <img src="' . $row["image_url"].'"width="75" height="75" > </td>';            
-            echo "<td>" . $count[0]."</td>";
+            echo "<td>" . $count["quantity"]."</td>";
             echo "</tr>";
         }
         
