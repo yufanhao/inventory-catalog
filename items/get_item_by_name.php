@@ -58,7 +58,7 @@
         echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
         echo "</tr>";
     }
-    echo "<br><form action ='inventory.php' method = 'get'>
+    echo "<br><form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Return to Inventory</button><br><br>
                 </form>";
 

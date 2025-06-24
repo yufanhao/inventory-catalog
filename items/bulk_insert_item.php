@@ -12,19 +12,10 @@ if ($fileHandle === false) {
 // skip headers line
 fgetcsv($fileHandle); //keep if want xls to have headers.
 while (($row = fgetcsv($fileHandle)) !== false) {
-    /*
-    $name =  $row[0];
-    $category = $row[1];
-    $image_url = $row[2]; 
-    $expiration = $row[3];
-    $box_number = $row[4]; 
-    //$quantity = $row[5];
-    // */
-
     // format: DATE("year-month-day")
     $serial_number = $row[0];
-    $expiration = DATE("2017-06-15");
-    $model_id = $row[1];
+    $expiration = DATE(substr($row[1], 0, 11)); // pick only 10digits that represent the date.
+    $model_id = $row[2];
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id) VALUES ('$serial_number', '$expiration', '$model_id')";
     if ($conn->query($sql) === TRUE ) {
@@ -38,9 +29,7 @@ while (($row = fgetcsv($fileHandle)) !== false) {
             $box_id = $row['id'];
         }
 
-        //$modelsql = "INSERT INTO model (name, category, image) VALUES ('$name', '$category', '$image_url')";
-        $joinsql = "INSERT INTO item_box_join (item_id, box_id) VALUES ('$item_id', '$box_id')";
-         if ($joinsql !== FALSE) {
+        if ($sql !== FALSE) {
             echo "New item entered successfully <br>";
         }
         else {
@@ -51,7 +40,7 @@ while (($row = fgetcsv($fileHandle)) !== false) {
 
 
 fclose($fileHandle);
-echo "<form action ='inventory.php' method = 'get'> <button type = 'submit'>Inventory list</button></form>";
+echo "<form action ='../models/view_models.php' method = 'get'> <button type = 'submit'>Inventory list</button></form>";
 
 ?>
 </html>

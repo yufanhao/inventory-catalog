@@ -2,7 +2,7 @@
     <body>
         <h1>Locations</h1>
         
-        <a href="../items/inventory.php">
+        <a href="../models/view_models.php">
             <button>Return to Inventory Page</button>
         </a>
 

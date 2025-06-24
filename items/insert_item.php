@@ -1,7 +1,7 @@
 <html>
     <?php
     require_once('../db.php');
-    require_once('upload_file.php');
+    //require_once('upload_file.php');
 
     $sn =  $_POST["sn"];
     $name =  $_POST["name"];
@@ -17,7 +17,7 @@
         echo "<form action ='../models/add_new_model.php' method = 'get'>
                 <button type = 'submit'>Create Model</button> 
                 </form>";
-        echo "<form action ='inventory.php' method = 'get'>
+        echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Cancel and Return to Inventory</button>
                 </form>";
         exit();
@@ -33,7 +33,7 @@
         echo "<form action ='../locations/insert_location.php' method = 'get'>
                 <button type = 'submit'>Create Location</button> 
                 </form>";
-        echo "<form action ='inventory.php' method = 'get'>
+        echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Cancel and Return to Inventory</button>
                 </form>";
         exit();
@@ -55,7 +55,7 @@
             echo "Error: " . $conn->error;
         }
 
-        echo "<form action ='inventory.php' method = 'get'>
+        echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Inventory</button>
                 </form>";
  

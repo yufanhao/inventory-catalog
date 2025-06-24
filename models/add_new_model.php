@@ -5,11 +5,11 @@
             Serial Number: <input type="text" name="sn"><br>
             Category: <input type="text" name="category"><br>
             Image: <input type="file" id="fileInput" name="image_url" width="50" height="50"><br>
+            <input type="hidden" name="ui_call" ><br>   
             <input type="submit">
         </form>
 
-        // TODO: Update when bulk_insert on all tables is revisited.
-        <form action="bulk_insert.php" method="POST">
+        <form action="bulk_insert_model.php" method="POST">
             Add models in bulk from a file spreadsheet: 
             <input type="text" hidden type="model"><br>   
             <input type="file" id="fileInput" name="table_file"><br>
@@ -21,7 +21,7 @@
             <button>Return to welcome page</button>
         </a>
 
-        <a href="view_models.php">
+        <a href="../models/view_models.php">
             <button>View Inventory</button>
         </a>
 </html>

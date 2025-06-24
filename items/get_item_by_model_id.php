@@ -4,12 +4,12 @@
     <form method = "GET" action = "">
             Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>">
-            Expiration: <input type="date" name="expiration">
-            Before/After: <select name="before_after">
+            Expiration: <input type="date" name="expiration" disabled>
+            Before/After: <select name="before_after" disabled>
                 <option value="<=">Before</option>
                 <option value=">">After</option>
             </select><br>
-            Location: <select name="location_type">
+            Location: <select name="location_type" disabled>
                 <option value="box">Box</option>
                 <option value="cabinet">Cabinet</option>
                 <option value="shelf">Shelf</option>
@@ -61,11 +61,12 @@
     echo "<tr><th>Serial Number</th><th>Expiration</th>
           <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Delete Item</th></tr>";
     while ($row = $items->fetch_assoc()) {
-        $i = 0;
         $location_id = $row['location_id'];
         $location_sql = "SELECT * FROM locations WHERE id = $location_id";
         $location = $conn->query($location_sql)->fetch_assoc();
         $location_type = $location["type"];
+        $flag = FALSE;
+
         $location_array = array(
             'box' => "",
             'cabinet' => "",
@@ -84,27 +85,33 @@
 
             $location_number = $location['number'];
             $location_array[$location_type] = $location_number;
-
             $parent_id = $location['parent_id'];
             $parent_sql = "SELECT * FROM locations WHERE id = $parent_id";
             $parent = $conn->query($parent_sql)->fetch_assoc();
             
             $location = $parent;
-            $location_type = $location["type"];
+            $location_type = $location["type"];            
         }
+        
+        // echo $location_array['box'];
+        // echo "<br>";
+        echo $location_array['cabinet'];
+        echo "<br>";
+        echo $location_array['floor'];
+        echo "<br>";
+
         echo "<tr>";
         echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['serial_number'] ."</td>";
         echo "<td>" . $row['expiration'] ."</td>";
         echo "<td>" . $location_array['box'] . "</td>";
-        echo "<td>". $location_array["cabinet"] ."</td>";
-        echo "<td>". $location_array["shelf"] ."</td>";
-        echo "<td>". $location_array["floor"] ."</td>";
+        echo "<td>". $location_array['cabinet'] ."</td>";
+        echo "<td>". $location_array['shelf'] ."</td>";
+        echo "<td>". $location_array['floor'] ."</td>";
         echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
         echo "</tr>";
     }
-
     echo '</table>';
-    echo "<br><form action ='inventory.php' method = 'get'>
+    echo "<br><form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Return to Inventory</button><br><br>
                 </form>";
 

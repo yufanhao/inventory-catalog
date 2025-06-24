@@ -8,7 +8,7 @@
 
     if ($conn->query($sql) === TRUE) {
         echo "Item deleted successfully";
-        echo "<form action ='../items/inventory.php' method = 'get'>
+        echo "<form action ='../models/view_models.php' method = 'get'>
               <button type = 'submit'>Return to Inventory</button>
               </form>";
     } else {
