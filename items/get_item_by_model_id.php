@@ -82,7 +82,7 @@
     }
     echo '</table>';
     echo "<br><form action ='../models/view_models.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button><br><br>
+                <button type = 'submit'>Return to Full Inventory</button><br><br>
                 </form>";
 
     $conn->close();
