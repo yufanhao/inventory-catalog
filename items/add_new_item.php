@@ -1,8 +1,8 @@
 <html>
     <h2>Add new item:</h2>
         <form action="insert_item.php" method="POST" enctype="multipart/form-data">
-            Serial Number: <input type="text" name="sn"><br>
-            Model Name: <input type="text" name="name"><br>
+            Serial Number: <input type="text" name="serial_number"><br>
+            Model Name: <input type="text" name="model_name"><br>
             Expiration: <input type="date" id="expiration" name="expiration"><br>
             Location Type: <select name="location_type">
                 <option value="box">Box</option>

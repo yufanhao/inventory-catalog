@@ -12,6 +12,8 @@
 
         <?php
         include '../db.php';
+        include '../functions.php';
+
         // Gets unique item names and their minimum ID for deletion
         $location_id = $_GET['id'];
         $parent = $conn->query("SELECT parent_id FROM locations WHERE id = $location_id")->fetch_assoc();
@@ -43,17 +45,16 @@
          
         // This includes all descendants of the current location
         $child_ids = getChildLocationIds($conn, $location_id);
-        $items = $conn->query("SELECT name, MIN(id) AS id FROM items WHERE location_id IN (" . implode(',', $child_ids) . ") GROUP BY name");
+        $items = $conn->query("SELECT model_id, MIN(id) AS id FROM items WHERE location_id IN (" . implode(',', $child_ids) . ") GROUP BY model_id");
         echo "<h2>Items in this $location_type:</h2>";
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Name</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
             // Counts the quantity of each item by name
-            $count = $conn->query("SELECT COUNT(*) as quantity FROM items WHERE name = '" . $row['name'] . "'")->fetch_assoc();
-
+            $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['model_id'] . "'")->fetch_assoc();
+            $model_name = fetch_row_data($conn, 'models', $row['model_id'], 'name');
             echo "<tr>";
-            echo "<td><a href='../items/get_item_by_name.php?name=" . $row['name'] . "'>" . $row['name'] ."</td>";
-
+            echo "<td><a href='../items/get_item_by_model_id.php?model_id=" . $row['model_id'] . "'>" . htmlspecialchars($model_name) . "</a></td>";
             echo '<td> <img src="' . $row["image_url"] .'"width="75" height="75" > </td>';
             echo "<td>" . $count['quantity'] ."</td>";
             echo "</tr>";
@@ -74,6 +75,7 @@
             }
             return $ids;
         }
+        
         ?>
     </body>
 </html>

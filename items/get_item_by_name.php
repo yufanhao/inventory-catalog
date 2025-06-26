@@ -16,35 +16,7 @@
           <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Delete Item</th></tr>";
     while ($row = $items->fetch_assoc()) {
         $location_id = $row['location_id'];
-        $location_sql = "SELECT * FROM locations WHERE id = $location_id";
-        $location = $conn->query($location_sql)->fetch_assoc();
-        $location_type = $location["type"];
         $location_array = get_location($conn, $location_id);
-        /*
-        array(
-            'box' => "",
-            'cabinet' => "",
-            'shelf' => "",
-            'floor' => ""
-        );*/
-
-        // Traverse up the location hierarchy to get all location types and numbers
-        while ($location_type != 'ancestor' AND $flag == FALSE) {
-            if (!$location) {
-                echo "Location not found for item: " . $row['name'] . ". Please check the database.";
-                $flag = TRUE;
-                break;
-            }
-
-            $location_number = $location['number'];
-            $location_array[$location_type] = $location_number;
-
-            $parent_id = $location['parent_id'];
-            $parent_sql = "SELECT * FROM locations WHERE id = $parent_id";
-            $parent = $conn->query($parent_sql)->fetch_assoc();
-            $location = $parent;
-            $location_type = $location["type"];
-        }
 
         echo "<tr>";
         echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['name'] ."</td>";
