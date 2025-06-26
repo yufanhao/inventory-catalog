@@ -11,7 +11,6 @@
             }
             echo "</select><br>";
             ?>
-            <!-- Model Name: <input type="text" name="model_name"><br> -->
             Expiration: <input type="date" id="expiration" name="expiration"><br>
             Location Type: <select name="location_type">
                 <option value="box">Box</option>
@@ -20,6 +19,7 @@
                 <option value="floor">Floor</option>
                 <option value="other">Other</option></select><br>
             Location Number(i.e. box number, etc): <input type="number" name="number"><br>
+            Quantity: <input type="number" name="quantity"><br>
             <input type="submit">
         </form>
 
