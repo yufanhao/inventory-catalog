@@ -59,7 +59,6 @@
         }
     }  
 
-    echo $selection;
     $items = $conn->query($selection); // this is the base query;
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
