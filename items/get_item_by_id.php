@@ -8,7 +8,7 @@
 
     if ($conn->query($sql) !== FALSE) {
         $result = $conn->query($sql);
-        echo "Item retrieved successfully! <br>";
+        echo "Item retrieved successfully! <br>"; 
         while ($row = $result->fetch_assoc()) {
             $location_id = $row['location_id'];
             $location_array = get_location($conn, $location_id);
