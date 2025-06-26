@@ -3,6 +3,7 @@
         <form action="insert_item.php" method="POST" enctype="multipart/form-data">
             Serial Number: <input type="text" name="serial_number"><br>
             <?php 
+            include '../db.php';
             echo "Model Name: <select name='model_name'>";
             $models = $conn->query("SELECT * FROM models");
             while ($model = $models->fetch_assoc()) {
