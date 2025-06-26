@@ -1,13 +1,13 @@
 <html>
     <?php
     require_once('../db.php');
-    //require_once('upload_file.php');
 
     $serial_number =  $_POST["serial_number"];
     $model_name =  $_POST["model_name"];
     $expiration =  $_POST["expiration"];
     $location_type =  $_POST["location_type"];
     $location_number =  $_POST["number"];
+    $quantity =  $_POST["quantity"];
 
     // ensure valid model id
     $model_check_sql = "SELECT id FROM models WHERE name = '$model_name'";
@@ -48,13 +48,14 @@
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id, location_id) 
            VALUES ('$serial_number', '$expiration', '$model_id', '$location_id')";
-   
+   for ($i = 0; $i < $quantity; $i++) {
         if ($conn->query($sql) === TRUE ) {
             echo "New item entered successfully <br>";
         } else {
             echo "Error: " . $conn->error;
+            exit();
         }
-
+    }
         echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Inventory</button>
                 </form>";

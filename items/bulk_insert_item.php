@@ -10,11 +10,10 @@ if ($fileHandle === false) {
 }
 
 // skip headers line
-fgetcsv($fileHandle); //keep if want xls to have headers.
+fgetcsv($fileHandle); 
 while (($row = fgetcsv($fileHandle)) !== false) {
-    // format: DATE("year-month-day")
     $serial_number = $row[0];
-    $expiration = DATE(substr($row[1], 0, 11)); // pick only 10digits that represent the date.
+    $expiration = DATE(substr($row[1], 0, 9)); // pick only 10digits that represent the date.
     $model_id = $row[2];
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id) VALUES ('$serial_number', '$expiration', '$model_id')";

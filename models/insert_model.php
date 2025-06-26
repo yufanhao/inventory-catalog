@@ -5,7 +5,7 @@
         require_once('../functions.php');
 
         $name =  $_POST["name"];
-        $part_number =  $_POST["pn"];
+        $part_number =  $_POST["serial_number"];
         $category = $_POST["category"];
         $image_url = $_POST["image_url"];
     
@@ -19,7 +19,7 @@
                         $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
 
         // TODO: either make category field a select or check for inconsistency.
-        $sql = "INSERT INTO models (name, part_number, category, image_url)
+        $sql = "INSERT INTO models (name, serial_number, category, image_url)
                     VALUES ('$name', '$part_number', '$category', '$uploaded_image')";
 
         if ($conn->query($sql) === TRUE ) {

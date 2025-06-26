@@ -27,7 +27,7 @@
             <button>View locations</button>
         </a>
 
-        <a href="models/insert_model.php">
+        <a href="models/add_new_model.php">
             <button>Add new model</button><br><br>
         </a>
 

@@ -25,11 +25,8 @@
     include('../db.php');
     include('../functions.php');
 
-    //include 'item_utils.php';
-    //$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
     $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
     $serial_number = isset($_GET['serial_number']) ? $conn->real_escape_string($_GET['serial_number']) : '';
-    //$expiration = isset($_GET['expiration']) ? $conn->real_escape_string($_GET['expiration']) : '';
     $before = isset($_GET['before']) ? $conn->real_escape_string($_GET['before']) : '';
     $after = isset($_GET['after']) ? $conn->real_escape_string($_GET['after']) : '';
     $location_type = isset($_GET['location_type']) ? $conn->real_escape_string($_GET['location_type']) : '';
@@ -41,26 +38,25 @@
     $model = $conn->query($model_sql)->fetch_assoc();
 
     $selection = "SELECT * FROM items WHERE 1=1";
-        if ($model_id != '' AND $model != null) { // this should never happen, bc $model_id is a url parameter.
-        $selection = $selection . " AND model_id = $model_id";
+        if ($model_id != '' AND $model != null) {  // this should never happen, bc $model_id is a url parameter
+            $selection = $selection . " AND model_id = $model_id"; 
     }
     
     if ($searched !== "") {
-        if ($serial_number != '') { // this should never happen, bc $model_id is a url parameter.
+        if ($serial_number != '') { 
             $selection = $selection . " AND serial_number LIKE '%$serial_number%'";
         }
 
-        if ($before != '') { // this should never happen, bc $model_id is a url parameter.
+        if ($before != '') { 
             $selection = $selection . " AND expiration <= Date('$before')";
         }
 
-        if ($after != '') { // this should never happen, bc $model_id is a url parameter.
+        if ($after != '') { 
             $selection = $selection . " AND expiration >= Date('$after')";
         }
     }  
 
-    echo $selection;
-    $items = $conn->query($selection); // this is the base query;
+    $items = $conn->query($selection);
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
     echo"<h2>".$model['name']."</h2>"; // model_name

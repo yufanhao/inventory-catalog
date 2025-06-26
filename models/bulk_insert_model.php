@@ -15,15 +15,13 @@
     // skip headers line
     fgetcsv($fileHandle); //keep if want xls to have headers.
 
-    
-
     while (($row = fgetcsv($fileHandle)) !== false) {
         $name =  $row[0];
         $part_number = $row[1];
         $category = $row[2];
         $image_url = $row[3]; 
 
-        echo ('hello' .$name . $part_number . $category . $image_url . '<br>');
+        // echo ('hello' .$name . $part_number . $category . $image_url . '<br>');
         insert_model_row($conn, $name, $part_number, $category, $image_url);
         /*
         // upload image file before trying to store it into tables.
