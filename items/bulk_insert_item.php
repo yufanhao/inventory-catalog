@@ -13,11 +13,18 @@ if ($fileHandle === false) {
 fgetcsv($fileHandle); 
 while (($row = fgetcsv($fileHandle)) !== false) {
     $serial_number = $row[0];
-    $expiration = DATE(substr($row[1], 0, 9)); // pick only 10digits that represent the date.
+    
+        //$expiration = date('Y-m-d', strtotime(substr($row[1], 1, 10))); // pick only 10digits that represent the date.
+    $expiration = date('Y-m-d', strtotime($row[1]));
     $model_id = $row[2];
+    $location_id = $row[3];
+    //TODO: XLS should use model_name and location_number instead of IDs.
 
-    $sql = "INSERT INTO items (serial_number, expiration, model_id) VALUES ('$serial_number', '$expiration', '$model_id')";
-    if ($conn->query($sql) === TRUE ) {
+    echo $row[3].'<br>';
+
+    $sql = "INSERT INTO items (serial_number, expiration, model_id, location_id) 
+    VALUES ('$serial_number', '$expiration', '$model_id', '$location_id')";
+    if ($conn->query($sql) !== FALSE ) {
         $item_id = $conn->insert_id;
 
         //TODO: move to new add_location() function?
@@ -34,6 +41,9 @@ while (($row = fgetcsv($fileHandle)) !== false) {
         else {
             echo "Error: " . $conn->error;
         }
+    }
+    else {
+        echo "Insert ROWError: " . $conn->error;
     }
 }
 
