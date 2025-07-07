@@ -16,6 +16,7 @@ function get_location($conn, $location_id) {
     while ($location_type != 'building' AND $flag == FALSE) {
         if (!$location) {
             echo "Location not found for item. Please check the database.";
+            echo "$location_type" . " asdhkfhksdjhf ";
             $flag = TRUE;
             break;
         }
@@ -27,6 +28,7 @@ function get_location($conn, $location_id) {
         $parent = $conn->query($parent_sql)->fetch_assoc();
         $location = $parent;
         $location_type = $location["type"];
+        // echo $location_type . " asdhkfhksdjhf ";
     }
     return $location_array;
 }

@@ -56,7 +56,7 @@
         }
     }  
 
-    $items = $conn->query($selection);
+    $items = $conn->query($selection); // this is the base query;
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
     echo"<h2>".$model['name']."</h2>"; // model_name
@@ -79,7 +79,7 @@
     }
     echo '</table>';
     echo "<br><form action ='../models/view_models.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button><br><br>
+                <button type = 'submit'>Return to Full Inventory</button><br><br>
                 </form>";
 
     $conn->close();

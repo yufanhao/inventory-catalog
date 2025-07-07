@@ -61,11 +61,14 @@
         } else {
             $items = $conn->query("SELECT * FROM models");
         }
+        if (!$items) {
+            die("Query Error: " . $conn->error);
+        }
         
         echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
         echo "<tr><th>Model Name</th><th>Serial Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
-            $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
+            $count = $conn->query(query: "SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
 
             echo "<tr>";
             echo "<td> <a href='../items/get_item_by_model_id.php?model_id=" . $row['id'] . "'>" . $row['name'] ."</td>";

@@ -26,7 +26,7 @@
             
             $name = htmlspecialchars($row['name']);
             echo '<a href="get_item_by_model_id.php?model_id=' . $row['model_id'] . '">
-                  <button type="button">Return to Inventory</button>
+                  <button type="button">Return to Model Inventory</button>
                   </a>';
 
         }         
