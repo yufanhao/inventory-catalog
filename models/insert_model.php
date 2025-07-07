@@ -1,9 +1,9 @@
 <html>
     <?php
-    if ($_POST["ui_call"] !== FALSE) {
-        require_once('../db.php');
-        require_once('../functions.php');
+    require_once('../db.php');
+    require_once('../functions.php');
 
+    if ($_POST["ui_call"] !== FALSE) {
         $name =  $_POST["name"];
         $part_number =  $_POST["serial_number"];
         $category = $_POST["category"];

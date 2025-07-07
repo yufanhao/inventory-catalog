@@ -76,6 +76,11 @@
             echo "<td>" . $row["category"] ."</td>";
             echo '<td> <img src="' . $row["image_url"].'"width="75" height="75" > </td>';            
             echo "<td>" . $count["quantity"]."</td>";
+            echo "<td>
+            <form method='POST' action='update_model.php'>
+                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                <button type='submit'>Edit Model</button>
+            </form></td>";   
             echo "</tr>";
         }
         

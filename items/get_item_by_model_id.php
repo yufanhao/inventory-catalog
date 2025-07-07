@@ -79,7 +79,7 @@
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <button type='submit'>Delete Item</button>
-            </form></td>";        
+            </form></td>";
         echo "</tr>";
     }
     echo '</table>';
