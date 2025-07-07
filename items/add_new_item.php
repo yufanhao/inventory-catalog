@@ -2,7 +2,15 @@
     <h2>Add new item:</h2>
         <form action="insert_item.php" method="POST" enctype="multipart/form-data">
             Serial Number: <input type="text" name="serial_number"><br>
-            Model Name: <input type="text" name="model_name"><br>
+            Model Name: <?php 
+                            include '../db.php';
+                            echo "Model Name: <select name='model_name'>";
+                            $models = $conn->query("SELECT * FROM models");
+                            while ($model = $models->fetch_assoc()) {
+                                echo "<option value='" . htmlspecialchars($model['name']) . "'>" . htmlspecialchars($model['name']) . "</option>";
+                            }
+                             echo "</select><br>";
+                        ?>
             Expiration: <input type="date" id="expiration" name="expiration"><br>
             Location Type: <select name="location_type">
                 <option value="box">Box</option>
@@ -11,6 +19,7 @@
                 <option value="floor">Floor</option>
                 <option value="other">Other</option></select><br>
             Location Number(i.e. box number, etc): <input type="number" name="number"><br>
+            Quantity: <input type="number" name="quantity"><br>
             <input type="submit">
         </form>
 

@@ -74,7 +74,7 @@
         echo "<td>". $location_array['cabinet'] ."</td>";
         echo "<td>". $location_array['shelf'] ."</td>";
         echo "<td>". $location_array['floor'] ."</td>";
-        echo "<td><a href='delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
+        echo "<td><a href='confirm_delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
         echo "</tr>";
     }
     echo '</table>';
