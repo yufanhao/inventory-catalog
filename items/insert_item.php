@@ -48,17 +48,17 @@
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id, location_id) 
            VALUES ('$serial_number', '$expiration', '$model_id', '$location_id')";
-   for ($i = 0; $i < $quantity; $i++) {
-        if ($conn->query($sql) === TRUE ) {
-            echo "New item entered successfully <br>";
-        } else {
+   
+    for ($i = 0; $i < $quantity; $i++) {
+        if ($conn->query($sql) !== TRUE ) {
             echo "Error: " . $conn->error;
             exit();
         }
     }
-        echo "<form action ='../models/view_models.php' method = 'get'>
-                <button type = 'submit'>Inventory</button>
-                </form>";
- 
+
+    echo "$quantity new item(s) entered successfully <br>";
+    echo "<form action ='../models/view_models.php' method = 'get'>
+            <button type = 'submit'>Inventory</button>
+            </form>"; 
     ?>
 </html>

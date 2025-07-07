@@ -61,6 +61,9 @@
         } else {
             $items = $conn->query("SELECT * FROM models");
         }
+        if (!$items) {
+            die("Query Error: " . $conn->error);
+        }
         
         echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
         echo "<tr><th>Model Name</th><th>Serial Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";

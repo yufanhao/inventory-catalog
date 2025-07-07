@@ -56,7 +56,7 @@
         }
     }  
 
-    $items = $conn->query($selection);
+    $items = $conn->query($selection); // this is the base query;
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
     echo"<h2>".$model['name']."</h2>"; // model_name
@@ -74,12 +74,17 @@
         echo "<td>". $location_array['cabinet'] ."</td>";
         echo "<td>". $location_array['shelf'] ."</td>";
         echo "<td>". $location_array['floor'] ."</td>";
-        echo "<td><a href='confirm_delete_item.php?id=" . $row['id'] . "'>Delete Item</a></td>";
+        echo "<td>
+            <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
+                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                <input type='hidden' name='model_id' value='" . $model_id . "'>
+                <button type='submit'>Delete Item</button>
+            </form></td>";        
         echo "</tr>";
     }
     echo '</table>';
     echo "<br><form action ='../models/view_models.php' method = 'get'>
-                <button type = 'submit'>Return to Inventory</button><br><br>
+                <button type = 'submit'>Return to Full Inventory</button><br><br>
                 </form>";
 
     $conn->close();
