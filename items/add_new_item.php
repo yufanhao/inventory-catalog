@@ -11,6 +11,7 @@
                 <option value="floor">Floor</option>
                 <option value="other">Other</option></select><br>
             Location Number(i.e. box number, etc): <input type="number" name="number"><br>
+            Quantity: <input type="number" name="quantity"><br>
             <input type="submit">
         </form>
 

@@ -13,7 +13,7 @@ function get_location($conn, $location_id) {
     );
 
     // Traverse up the location hierarchy to get all location types and numbers
-    while ($location_type != 'ancestor' AND $flag == FALSE) {
+    while ($location_type != 'building' AND $flag == FALSE) {
         if (!$location) {
             echo "Location not found for item. Please check the database.";
             $flag = TRUE;
