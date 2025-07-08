@@ -16,7 +16,7 @@
         // upload image file before trying to store it into tables.
         echo 'debug in insert_model_row'.$image_url.'<br>';
         $uploaded_image = upload_file($image_url, 
-                        $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
+                        $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images', 'image');
  
         $sql = "INSERT INTO models (name, serial_number, category, image_url)
                     VALUES ('$name', '$part_number', '$category', '$uploaded_image')";
