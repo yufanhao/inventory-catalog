@@ -59,7 +59,7 @@
             AND part_number like '%$part_number%'
             GROUP BY name");
         } else {
-            $items = $conn->query("SELECT * FROM models");
+            $items = $conn->query("SELECT * FROM models ORDER BY name");
         }
         if (!$items) {
             die("Query Error: " . $conn->error);
