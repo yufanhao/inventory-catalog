@@ -48,7 +48,7 @@
         echo "Category: <input type='text' name='category' value='" . htmlspecialchars($model['category']) . "'><br>";
         echo "Image: <br>";
         echo '<img src="' . htmlspecialchars($model['image_url']) . '" width="75" height="75"><br>';
-        echo "New Image: <input type='file' id='fileInput' name='image_url' width='50' height='50'><br>";
+        echo "New Image: <input type='file' id='fileInput' name='image_url' width='50' height='50' value='" . htmlspecialchars($model['image_url']) . "'><br>";
         echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
         echo "<input type='hidden' name='submitted' value='true'><br>";
         echo "<input type='submit' value='Update Model'></form>";
