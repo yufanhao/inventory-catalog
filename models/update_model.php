@@ -8,12 +8,19 @@
     $submitted = $_POST['submitted'];
     $part_number = $_POST['part_number'];
     $category = $_POST['category'];
-    $image_url = $_POST['image_url'];
+    $image_url = $_FILES['image_url'];
 
     $model_sql = "SELECT * FROM models WHERE id = $id";
     $model_result = $conn->query($model_sql);
     if (isset($_POST['submitted']) && $model_result && $model_result->num_rows > 0) {
-        upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
+        if ($image_url['error'] == UPLOAD_ERR_NO_FILE) {
+            // If no new image is uploaded, keep the existing image URL
+            $model = $model_result->fetch_assoc();
+            $image_url = $model['image_url'];
+        } else {
+            // If a new image is uploaded, handle the file upload
+            $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
+        }
         $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image_url = '$image_url' WHERE id = $id";
         if ($conn->query($sql) === TRUE) {
             echo "Model updated successfully! <br>";
