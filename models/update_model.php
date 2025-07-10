@@ -22,6 +22,21 @@
             $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
         }
         $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image_url = '$image_url' WHERE id = $id";
+    
+        
+        /*
+        $sql = "UPDATE models SET ";
+        if($name != "")
+            $sql += ", name = '$name'";
+        if($part_number != "")
+            $sql += ", part_number = '$part_number'";
+        if($category != "")
+            $sql += ", category = '$category'";
+        if($category != "")
+            $sql += ", image_url = '$image'";
+        $sql += " WHERE id = $id";
+        */
+
         if ($conn->query($sql) === TRUE) {
             echo "Model updated successfully! <br>";
             echo "<form action ='../models/view_models.php' method = 'get'>
