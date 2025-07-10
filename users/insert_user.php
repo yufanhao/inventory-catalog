@@ -4,8 +4,9 @@
 
     $username =  $_POST["username"];
     $email = $_POST["email"];
-    $password = $_POST["password"];
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     $user = $conn->query("SELECT * from users WHERE name='$username'");
+    $role = 'user'; // Default role for new users
     if ($user && $user->num_rows > 0) {
         echo "That username already exists";
         echo "<form action ='../sign_up.php' method = 'get'>
@@ -13,8 +14,7 @@
               </form>";
     }
     else {
-        $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
-
+        $sql = "INSERT INTO users (username, email, password, role) VALUES ('$username', '$email', '$password', '$role')";
         if ($conn->query($sql) === TRUE) {
             echo "New user created successfully <br>";
         } else {
