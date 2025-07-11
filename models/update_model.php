@@ -8,22 +8,24 @@
     $submitted = $_POST['submitted'];
     $part_number = $_POST['part_number'];
     $category = $_POST['category'];
-    $image_url = $_FILES['image_url'];
+    $image_url = "image_url"; // <-- this is empty
 
     $model_sql = "SELECT * FROM models WHERE id = $id";
     $model_result = $conn->query($model_sql);
+    
     if (isset($_POST['submitted']) && $model_result && $model_result->num_rows > 0) {
-        if ($image_url['error'] == 'UPLOAD_ERR_NO_FILE') {
-            // If no new image is uploaded, keep the existing image URL
-            $model = $model_result->fetch_assoc();
-            $image_url = $model['image_url'];
-        } else {
-            // If a new image is uploaded, handle the file upload
-            $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $name . '.jpg');
-            echo  $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $name . '.jpg';
+        if ($image_url !== "") {
+            if ($image_url['error'] == 'UPLOAD_ERR_NO_FILE') {
+                // If no new image is uploaded, keep the existing image URL
+                $model = $model_result->fetch_assoc();
+                $image_url = $model['image_url'];
+            } else {
+                // If a new image is uploaded, handle the file upload
+                $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $name . '.jpg');
+                echo  $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $image_url . '.jpg';
+            }
+            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image_url = '$image_url' WHERE id = $id";
         }
-        $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image_url = '$image_url' WHERE id = $id";
-        
         /*
         $sql = "UPDATE models SET ";
         if($name != "")
@@ -36,15 +38,6 @@
             $sql += ", image_url = '$image'";
         $sql += " WHERE id = $id";
         */
-
-        if ($conn->query($sql) === TRUE) {
-            echo "Model updated successfully! <br>";
-            echo "<form action ='../models/view_models.php' method = 'get'>
-                    <button type = 'submit'>Inventory</button>
-                  </form>";
-        } else {
-            echo "Error updating model: " . $conn->error;
-        }
     }
     else if ($model_result && $model_result->num_rows > 0) {
         $model = $model_result->fetch_assoc();
@@ -54,7 +47,7 @@
         echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
         echo "Category: <input type='text' name='category' value='" . htmlspecialchars($model['category']) . "'><br>";
         echo "Image: <br>";
-        echo '<img src="' . htmlspecialchars($model['image_url']) . '" width="75" height="75"><br>';
+        echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
         echo "New Image: <input type='file' id='fileInput' name='image_url' width='50' height='50' value='" . htmlspecialchars($model['image_url']) . "'><br>";
         echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
         echo "<input type='hidden' name='submitted' value='true'><br>";

@@ -26,11 +26,12 @@
         $result = $conn->query("SELECT * FROM users");
 
         echo "<table border='1' cellpadding='8'>";
-        echo "<tr><th>ID</th><th>Name</th><th>Email</th></tr>";
+        echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['id']) .'</a></td>';
             echo "<td><a href='get_user_by_id.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['username']) .'</a></td>';
+            echo "<td>" . htmlspecialchars($row['role']) .'</td>';
             echo "<td>" . htmlspecialchars($row['email']) .'</td>';
             echo "<td><a href='delete_user.php?id=" . $row['id'] . "'>Delete User</a></td>";
             echo "</tr>";

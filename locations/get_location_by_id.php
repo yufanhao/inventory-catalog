@@ -55,7 +55,7 @@
             $model_name = fetch_row_data($conn, 'models', $row['model_id'], 'name');
             echo "<tr>";
             echo "<td><a href='../items/get_item_by_model_id.php?model_id=" . $row['model_id'] . "'>" . htmlspecialchars($model_name) . "</a></td>";
-            echo '<td> <img src="' . $row["image_url"] .'"width="75" height="75" > </td>';
+            echo '<td title= ' . $row["image_url"].'> <img src="' . $row["image_url"].'"width="100" height="100" > </td>'; 
             echo "<td>" . $count['quantity'] ."</td>";
             echo "</tr>";
         }

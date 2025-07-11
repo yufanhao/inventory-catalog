@@ -13,7 +13,7 @@
             echo "User ID: " . htmlspecialchars($row['id']) . "<br>";
             echo "Username: " . htmlspecialchars($row['username']) . "<br>";
             echo "Email: " . htmlspecialchars($row['email']) . "<br><br>";
-
+            echo "Role: " . htmlspecialchars($row['role']) . "<br><br>";
             echo "<form action ='users.php' method = 'get'>
                  <button type = 'submit'>Return to Users</button>
                  </form>";
