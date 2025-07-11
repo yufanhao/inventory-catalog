@@ -89,7 +89,7 @@ function upload_file($src_file , $target_dir, $file_type = 'image') {
         } else {
             if (move_uploaded_file($_FILES[$src_file]["tmp_name"], $target_file)) {
                 echo "The file ". htmlspecialchars($file_name) . " has been uploaded successfully.<br>";
-                return htmlspecialchars("/inventory-catalog/images/" . $file_name) ; 
+                return htmlspecialchars($_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $file_name) ; 
             //todo: remove hardcoded appName, but need relative path. 
             } else {
                 echo "Sorry, there was an error uploading your file {$file_name}.<br>";
