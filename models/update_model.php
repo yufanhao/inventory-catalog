@@ -13,16 +13,16 @@
     $model_sql = "SELECT * FROM models WHERE id = $id";
     $model_result = $conn->query($model_sql);
     if (isset($_POST['submitted']) && $model_result && $model_result->num_rows > 0) {
-        if ($image_url['error'] == UPLOAD_ERR_NO_FILE) {
+        if ($image_url['error'] == 'UPLOAD_ERR_NO_FILE') {
             // If no new image is uploaded, keep the existing image URL
             $model = $model_result->fetch_assoc();
             $image_url = $model['image_url'];
         } else {
             // If a new image is uploaded, handle the file upload
-            $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images');
+            $image_url = upload_file($image_url, $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $name . '.jpg');
+            echo  $_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $name . '.jpg';
         }
         $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image_url = '$image_url' WHERE id = $id";
-    
         
         /*
         $sql = "UPDATE models SET ";

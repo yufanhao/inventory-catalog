@@ -8,7 +8,7 @@
 // $file_type: type of files being uploaded. Default is image files.
 // $file_name: base file name. Set to basename of files location, if empty
 
-function upload_file($src_file , $target_dir, $file_type = 'image'){ 
+function upload_file($src_file , $target_dir, $file_type = 'image') { 
 
   // initialize expected values based on file types.
   // for now, support images only. can expand in future.
