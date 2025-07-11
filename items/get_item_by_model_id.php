@@ -80,8 +80,8 @@
         echo "<td>". $location_array['shelf'] ."</td>";
         echo "<td>". $location_array['floor'] ."</td>";
 
-        if ($row['user_ID'] === null) {
-            $ser_name = 'Available';
+        if ($row['user_ID'] === '0') {
+            $user_name = 'Available';
         }
         else {
             $user = $conn->query("SELECT username, email from users where id = " . $row['user_ID']);

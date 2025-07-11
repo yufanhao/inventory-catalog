@@ -15,8 +15,8 @@ function get_location($conn, $location_id) {
     // Traverse up the location hierarchy to get all location types and numbers
     while ($location_type != 'building' AND $flag == FALSE) {
         if (!$location) {
-            echo "Location not found for item. Please check the database.";
-            echo "$location_type" . " asdhkfhksdjhf ";
+            //echo "Location not found for item. Please check the database.";
+            //echo "$location_type" . " asdhkfhksdjhf ";
             $flag = TRUE;
             break;
         }
@@ -89,7 +89,7 @@ function upload_file($src_file , $target_dir, $file_type = 'image') {
         } else {
             if (move_uploaded_file($_FILES[$src_file]["tmp_name"], $target_file)) {
                 echo "The file ". htmlspecialchars($file_name) . " has been uploaded successfully.<br>";
-                return htmlspecialchars($_SERVER['DOCUMENT_ROOT'] . '/inventory-catalog/images/' . $file_name) ; 
+                return htmlspecialchars('/inventory-catalog/images/' . $file_name); 
             //todo: remove hardcoded appName, but need relative path. 
             } else {
                 echo "Sorry, there was an error uploading your file {$file_name}.<br>";
