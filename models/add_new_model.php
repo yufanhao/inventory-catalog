@@ -4,8 +4,7 @@
             Name: <input type="text" name="name"><br>   
             Part Number: <input type="text" name="part_number"><br>
             Category: <input type="text" name="category"><br>
-            Image: <input type="file" id="fileInput" name="image_url" width="50" height="50"><br>
-            <input type="hidden" name="ui_call" ><br>   
+            Image: <input type="file" name="image" width="50" height="50"><br>
             <input type="submit">
         </form>
 

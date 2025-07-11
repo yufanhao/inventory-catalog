@@ -9,6 +9,7 @@
     $part_number = $_POST['part_number'];
     $category = $_POST['category'];
     $image = $_FILES['image'];
+    $image = $_FILES['image'];
 
     $model_sql = "SELECT * FROM models WHERE id = $id";
     $model_result = $conn->query($model_sql);
@@ -38,11 +39,14 @@
     else if ($model_result && $model_result->num_rows > 0) {
         $model = $model_result->fetch_assoc();
         echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
+        echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
         echo "Model ID: " . htmlspecialchars($model['id']) . "<br>";
         echo "Model Name: <input type='text' name='name' value='" . htmlspecialchars($model['name']) . "'><br>";
         echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
         echo "Category: <input type='text' name='category' value='" . htmlspecialchars($model['category']) . "'><br>";
         echo "Image: <br>";
+        echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
+        echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
         echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
         echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
         echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
