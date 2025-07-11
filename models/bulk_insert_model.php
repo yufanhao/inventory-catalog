@@ -22,7 +22,7 @@
         $image_url = $row[3]; 
 
         // echo ('hello' .$name . $part_number . $category . $image_url . '<br>');
-        insert_model_row($conn, $name, $part_number, $category, $image_url);
+        // insert_model_row($conn, $name, $part_number, $category, $image_url);
         /*
         // upload image file before trying to store it into tables.
         $uploaded_image = upload_file($row[3], 

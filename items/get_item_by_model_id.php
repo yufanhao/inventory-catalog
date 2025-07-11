@@ -4,10 +4,11 @@
     <form method = "GET" action = "">
             Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>"></br>
-            Before: <input type="date" name="before" value =
-                "<?php echo isset($_GET['before']) ? htmlspecialchars($_GET['before']) : ''; ?>">
-            After: <input type="date" name="after" value =
-                "<?php echo isset($_GET['after']) ? htmlspecialchars($_GET['after']) : ''; ?>"></br>
+            Expiration: <input type="date" name="expiration" value = 
+                "<?php echo isset($_GET["expiration"]) ? $_GET["expiration"] : ''; ?>">
+            Before/After: <select name="before_after">
+                <option value="<=" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == "<=") echo "selected";?>>Before</option>
+                <option value=">" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == ">") echo "selected";?>>After</option></select><br>
             Location: <select name="location_type">
                 <option value="box">Box</option>
                 <option value="cabinet">Cabinet</option>
@@ -27,8 +28,8 @@
 
     $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
     $serial_number = isset($_GET['serial_number']) ? $conn->real_escape_string($_GET['serial_number']) : '';
-    $before = isset($_GET['before']) ? $conn->real_escape_string($_GET['before']) : '';
-    $after = isset($_GET['after']) ? $conn->real_escape_string($_GET['after']) : '';
+    $expiration = isset($_GET['expiration']) ? $conn->real_escape_string($_GET['expiration']) : '';
+    $before_after = isset($_GET['before_after']) ? $conn->real_escape_string($_GET['before_after']) : '';
     $location_type = isset($_GET['location_type']) ? $conn->real_escape_string($_GET['location_type']) : '';
     $location_number = isset($_GET['number']) ? $conn->real_escape_string($_GET['number']) : '';
 
@@ -46,13 +47,13 @@
         if ($serial_number != '') { 
             $selection = $selection . " AND serial_number LIKE '%$serial_number%'";
         }
-
-        if ($before != '') { 
-            $selection = $selection . " AND expiration <= Date('$before')";
+        if ($expiration !== "") {
+            $selection .= " AND expiration $before_after '$expiration'";
         }
-
-        if ($after != '') { 
-            $selection = $selection . " AND expiration >= Date('$after')";
+        if ($location_type !== "" && $location_number !== "") {
+            $location = $conn->query("SELECT id FROM locations WHERE type = '$location_type' AND number = '$location_number'")->fetch_assoc();
+            $location_id = $location['id'];
+            $selection .= " AND location_id = '$location_id'";
         }
     }  
 
@@ -60,6 +61,8 @@
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
     echo"<h2>".$model['name']."</h2>"; // model_name
+    echo "<img src='../models/get_image.php?id=" . $model_id . "' width='150' height='150'>";
+
     echo "<table border='1' cellpadding='8'>";
     echo "<tr><th>Serial Number</th><th>Expiration</th>
           <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Delete Item</th></tr>";
