@@ -18,28 +18,33 @@
                 "<?php echo isset($_GET['number']) ? htmlspecialchars($_GET['number']) : ''; ?>"></br>
             <input type="hidden" name="searched" value="searched">
             <input type="hidden" name="model_id" value="<?php echo isset($_GET['model_id']) ? htmlspecialchars($_GET['model_id']) : ''; ?>">
+            <input type="hidden" name="user_ID" value="<?php echo isset($_GET['user_ID']) ? htmlspecialchars($_GET['user_ID']) : ''; ?>">
             <button type="submit">Search</button>
         </form>
 
 <?php
     include('../db.php');
     include('../functions.php');
-
+    
     $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
     $serial_number = isset($_GET['serial_number']) ? $conn->real_escape_string($_GET['serial_number']) : '';
     $before = isset($_GET['before']) ? $conn->real_escape_string($_GET['before']) : '';
     $after = isset($_GET['after']) ? $conn->real_escape_string($_GET['after']) : '';
     $location_type = isset($_GET['location_type']) ? $conn->real_escape_string($_GET['location_type']) : '';
     $location_number = isset($_GET['number']) ? $conn->real_escape_string($_GET['number']) : '';
+    //$user_ID = isset($_GET['user_ID']) ? $conn->real_escape_string($_GET['user_ID']) : '';
 
     $model_id = $_GET["model_id"];
+    $user_ID = $_GET['user_ID'];
+    echo $user_ID;
+
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
     $model = $conn->query($model_sql)->fetch_assoc();
 
     $selection = "SELECT * FROM items WHERE 1=1";
-        if ($model_id != '' AND $model != null) {  // this should never happen, bc $model_id is a url parameter
-            $selection = $selection . " AND model_id = $model_id"; 
+    if ($model_id != '' AND $model != null) {  
+        $selection = $selection . " AND model_id = $model_id"; 
     }
     
     if ($searched !== "") {
@@ -62,7 +67,7 @@
     echo"<h2>".$model['name']."</h2>"; // model_name
     echo "<table border='1' cellpadding='8'>";
     echo "<tr><th>Serial Number</th><th>Expiration</th>
-          <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Delete Item</th></tr>";
+          <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Reserved</th><th>Delete Item</th></tr>";
     while ($row = $items->fetch_assoc()) {
         $location_id = $row['location_id'];
         $location_array = get_location($conn, $location_id);
@@ -74,6 +79,21 @@
         echo "<td>". $location_array['cabinet'] ."</td>";
         echo "<td>". $location_array['shelf'] ."</td>";
         echo "<td>". $location_array['floor'] ."</td>";
+
+        if ($row['user_ID'] === null) {
+            $ser_name = 'Available';
+        }
+        else {
+            $user = $conn->query("SELECT username, email from users where id = " . $row['user_ID']);
+            $user_row = $user->fetch_assoc(); // check for non-zero rows.
+            $user_name = $user_row['username'];
+            $user_email = $user_row['email'];
+        }
+
+        echo "<td>" . $user_name . "</td>";
+        
+      
+        
         echo "<td>
             <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
                 <input type='hidden' name='id' value='" . $row['id'] . "'>

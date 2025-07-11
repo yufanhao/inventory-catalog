@@ -3,12 +3,11 @@
     require_once('../db.php');
     require_once('../functions.php');
 
-    if ($_POST["ui_call"] !== FALSE) {
+    if (isset($_POST["ui_call"])) {//} !== FALSE) {
         $name =  $_POST["name"];
         $part_number =  $_POST["part_number"];
         $category = $_POST["category"];
-        $image_url = $_POST["image_url"];
-        
+        $image_url = "image_url";
         insert_model_row($conn, $name, $part_number, $category, $image_url);
     }
 
