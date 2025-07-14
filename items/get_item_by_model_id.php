@@ -92,7 +92,7 @@ require_once('../db.php');
     echo "<img src='../models/get_image.php?id=" . $model_id . "' width='150' height='150'>";
 
     echo "<table border='1' cellpadding='8'>";
-    echo "<tr><th>Serial Number</th><th>Expiration</th>          <th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Reserved</th><th>Actions</th></tr>";
+    echo "<tr><th>Serial Number</th><th>Expiration</th><th>Box</th><th>Cabinet</th><th>Shelf</th><th>Floor</th><th>Reserved</th><th>Status</th><th>Actions</th></tr>";
     while ($row = $items->fetch_assoc()) {
         $location_id = $row['location_id'];
         $location_array = get_location($conn, $location_id);
@@ -115,7 +115,7 @@ require_once('../db.php');
             $user = $conn->query("SELECT username, email from users where id = " . $row['user_id']);
             $user_row = $user->fetch_assoc(); // check for non-zero rows.
             $user_name = $user_row['username'];
-            $user_email = $user_row['email'];  // TODO: Use as link to username.
+            $user_email = $user_row['email'];
             $user_action = 'Return';
             // only enable return loan if current user is the loaner user
             $disabled = ($user_id !== $_SESSION["user_id"]) ? 'disabled' : '';
@@ -123,7 +123,12 @@ require_once('../db.php');
     
         echo "<td><a href='mailto:" . $user_email . "'>" . $user_name ."</td>";
         
-        
+        $today = date('Y-m-d');
+        if ($row['expiration'] === '0000-00-00' || $today < $row['expiration'])
+            echo "<td>Usable</td>";
+        else
+            echo "<td>Expired</td>";
+
         echo "<td>
             <form method='POST' action='loan_item.php'>
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
