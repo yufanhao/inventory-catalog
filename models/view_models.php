@@ -37,6 +37,17 @@
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
             Category: <input type="text" name = "category" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
+            <!--
+            <?php 
+                        include '../db.php';
+                        echo "Category: <select name='model_name'>";
+                        $models = $conn->query("SELECT DISTINCT * FROM models ORDER BY name");
+                        while ($model = $models->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($model['category']) . "'>" . htmlspecialchars($model['category']) . "</option>";
+                        }
+                        echo "</select><br>";
+                    ?>
+            -->
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">

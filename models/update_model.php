@@ -47,8 +47,17 @@
         echo "Image: <br>";
         echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
         echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
-        echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
-        echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
+        /*
+            echo 'Model Name: <select name='model_category'>';
+            $models = $conn->query('SELECT * FROM models');
+            while ($model = $models->fetch_assoc()) {
+                echo '<option value='' . htmlspecialchars($model['name']) . ''>' . htmlspecialchars($model['name']) . "</option>";
+            }
+            echo "</select><br>";
+            
+        <br>";
+        */
+
         echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
         echo "<input type='hidden' name='submitted' value='true'><br>";
         echo "<input type='submit' value='Update Model'></form>";
