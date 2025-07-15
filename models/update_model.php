@@ -18,14 +18,20 @@
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             // If a new image is uploaded, handle the file upload
             $image_type = $_FILES['image']['type'];
+            $category_id = $conn->query("SELECT id from categories where name = '$category'")->fetch_assoc();
+            $c_id = $category_id['id'];
             $image_data = $conn->real_escape_string(file_get_contents($_FILES['image']['tmp_name']));
-            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category', image = '$image_data', image_type = '$image_type' WHERE id = $id";
+            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category_id = '$c_id', image = '$image_data', image_type = '$image_type' WHERE id = '$id'";
 
         } else {
             // If no new image is uploaded, keep the existing image URL
             $model = $model_result->fetch_assoc();
             $image = $model['image'];
-            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category = '$category' WHERE id = $id";
+
+
+            $category_id = $conn->query("SELECT id from categories where name = '$category'")->fetch_assoc();
+            $c_id = $category_id['id'];
+            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category_id = '$c_id' WHERE id = '$id'";
         }
         if ($conn->query($sql) === TRUE) {
             echo "Model updated successfully <br>";
@@ -51,26 +57,30 @@
         }
         echo "</select><br>";
         echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
+        
+        
         echo "Category: <select name='category'>";
-        while ($row = $categories->fetch_assoc()) {
-            $cat = htmlspecialchars($row['category']);
-            $selected = ($row['category'] === $model['category']) ? 'selected' : '';
-            echo "<option value='$cat' $selected>$cat</option>";
+        $categories = $conn->query("SELECT DISTINCT * FROM categories ORDER BY name");
+        while ($category = $categories->fetch_assoc()) {
+            echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
         }
         echo "</select><br>";
+        
+        //echo "Category: <input type='text' name='category' value='" . htmlspecialchars($model['category']) . "'><br>";
+        
+        
         echo "Image: <br>";
         echo '<img src="get_image.php?id=' . $model['id'] . '" width="300" height="300"><br>';
         echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
         /*
-            echo 'Model Name: <select name='model_category'>';
-            $models = $conn->query('SELECT * FROM models');
-            while ($model = $models->fetch_assoc()) {
-                echo '<option value='' . htmlspecialchars($model['name']) . ''>' . htmlspecialchars($model['name']) . "</option>";
-            }
-            echo "</select><br>";
-            
-        <br>";
-        */
+        include '../db.php';
+        echo "Category: <select name='category'>";
+        $categories = $conn->query("SELECT DISTINCT * FROM categories ORDER BY name");
+        while ($category = $categories->fetch_assoc()) {
+            echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
+        }
+        echo "</select><br>";
+             */
 
         echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
         echo "<input type='hidden' name='submitted' value='true'><br>";

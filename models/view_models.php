@@ -27,7 +27,10 @@
         <a href="../models/add_new_model.php">
             <button>Add new model</button>
         </a><br>
-        
+
+         <a href="../add_new_category.php">
+            <button>Add new category</button>
+        </a>
         
         <h2>Model list:</h2>
 
@@ -35,19 +38,17 @@
         <form method = "GET" action = "">
             Name: <input type="text" name = "name" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
-            <?php
-            include '../db.php';
-            $categories = $conn->query("SELECT DISTINCT category FROM models");
-            echo "Category: <select name='category'>";
-            $defaultSelected = ($selectedCategory === '') ? 'selected' : '';
-            echo "<option value='' $defaultSelected> Select Category </option>";
-            while ($row = $categories->fetch_assoc()) {
-                $cat = htmlspecialchars($row['category']);
-                $selected = ($row['category'] === $_GET['category']) ? 'selected' : '';
-                echo "<option value='$cat' $selected>$cat</option>";
-            }
-            echo "</select>";
-            ?>
+            Category: <input type="text" name = "category" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
+            <!--<?php 
+                        include '../db.php';
+                        echo "Category: <select name='model_name'>";
+                        $models = $conn->query("SELECT DISTINCT * FROM models ORDER BY name");
+                        while ($model = $models->fetch_assoc()) {
+                            echo "<option value='" . htmlspecialchars($model['category']) . "'>" . htmlspecialchars($model['category']) . "</option>";
+                        }
+                        echo "</select><br>";
+                    ?> -->
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
@@ -78,11 +79,12 @@
         echo "<tr><th>Model Name</th><th>Part Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
             $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
-
             echo "<tr>";
             echo "<td><a href='../items/get_item_by_model_id.php?model_id=" . $row['id'] . "'>" . $row['name'] ."</td>";
             echo "<td>" . $row["part_number"]."</td>";
-            echo "<td>" . $row["category"] ."</td>";
+            $category_id = $row["category_id"];
+            $category = $conn->query("SELECT name FROM categories where id = '$category_id'")->fetch_assoc();
+            echo "<td>" . $category['name'] ."</td>";
             echo "<td><img src='get_image.php?id=" . $row['id'] . "' width='75' height='75'></td>";
             echo "<td>" . $count["quantity"]."</td>";
             echo "<td>
