@@ -73,10 +73,12 @@
         $category_id = isset($category_row['id']) ? $category_row['id'] : '';
 
         if ($searched !== "") {
-            $items = $conn->query("SELECT * FROM models
+            $sql = "SELECT * FROM models
             WHERE name like '%$name%' AND category_id = '%$category_id%' 
             AND part_number like '%$part_number%'
-            GROUP BY name");
+            GROUP BY name";
+            $items = $conn->query($sql);
+            echo "$sql";
         } else {
             $items = $conn->query("SELECT * FROM models ORDER BY name");
         }
