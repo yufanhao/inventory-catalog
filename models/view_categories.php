@@ -35,19 +35,8 @@
         <form method = "GET" action = "">
             Name: <input type="text" name = "name" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
-            <?php
-            include '../db.php';
-            $categories = $conn->query("SELECT DISTINCT category FROM models");
-            echo "Category: <select name='category'>";
-            $defaultSelected = ($selectedCategory === '') ? 'selected' : '';
-            echo "<option value='' $defaultSelected> Select Category </option>";
-            while ($row = $categories->fetch_assoc()) {
-                $cat = htmlspecialchars($row['category']);
-                $selected = ($row['category'] === $_GET['category']) ? 'selected' : '';
-                echo "<option value='$cat' $selected>$cat</option>";
-            }
-            echo "</select>";
-            ?>
+            Category: <input type="text" name = "category" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
@@ -57,6 +46,8 @@
 
         <?php
         include '../db.php';
+        //include 'item_utils.php';
+        //$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
         $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
