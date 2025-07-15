@@ -72,21 +72,24 @@
         $category_row = $conn->query("SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
         $category_id = isset($category_row['id']) ? $category_row['id'] : '';
         if ($searched !== "") {
-            if ($category == '') {
-                $items = $conn->query("SELECT * FROM models
-                WHERE name like '%$name%' AND part_number like '%$part_number%'
-                GROUP BY name");
+            $sql = "SELECT * FROM models WHERE 1=1 ";
+            if ($name != '') {
+                $sql .= "AND name like '%$name%' ";
             }
-            else {
-                $items = $conn->query("SELECT * FROM models
-                WHERE name like '%$name%' AND category_id = '$category_id' 
-                AND part_number like '%$part_number%'
-                GROUP BY name");
+            if ($part_number != '') {
+                $sql .= "AND part_number like '%$part_number%' ";
             }
-           
-        } else {
-            $items = $conn->query("SELECT * FROM models ORDER BY name");
+            if ($category != '') {
+                $sql .= "AND category_id = '$category_id' ";
+            }
         }
+        else {
+            $sql = "SELECT * from models ";
+        }
+        $sql .= "ORDER by name";
+
+        echo $sql;
+        $items = $conn->query($sql);
         if (!$items) {
             die("Query Error: " . $conn->error);
         }
