@@ -69,14 +69,21 @@
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
-        $category_row = $conn->query(query: "SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
+        $category_row = $conn->query("SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
         $category_id = isset($category_row['id']) ? $category_row['id'] : '';
-
         if ($searched !== "") {
-            $items = $conn->query("SELECT * FROM models
-            WHERE name like '%$name%' AND category_id = '%$category_id%' 
-            AND part_number like '%$part_number%'
-            GROUP BY name");
+            if ($category == '') {
+                $items = $conn->query("SELECT * FROM models
+                WHERE name like '%$name%' AND part_number like '%$part_number%'
+                GROUP BY name");
+            }
+            else {
+                $items = $conn->query("SELECT * FROM models
+                WHERE name like '%$name%' AND category_id = '$category_id' 
+                AND part_number like '%$part_number%'
+                GROUP BY name");
+            }
+           
         } else {
             $items = $conn->query("SELECT * FROM models ORDER BY name");
         }
