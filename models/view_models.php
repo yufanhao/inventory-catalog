@@ -60,7 +60,6 @@
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
             <button type = "submit">Search</button>
-            <!--<a href="search_model.php"><button type = "button">Advanced Search/Filter</button></a>-->
         </form>
 
         <?php
@@ -69,19 +68,26 @@
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
-        $category_row = $conn->query(query: "SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
+        $category_row = $conn->query("SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
         $category_id = isset($category_row['id']) ? $category_row['id'] : '';
-
         if ($searched !== "") {
-            $sql = "SELECT * FROM models
-            WHERE name like '%$name%' AND category_id = '%$category_id%' 
-            AND part_number like '%$part_number%'
-            GROUP BY name";
-            $items = $conn->query($sql);
-            echo "$sql";
-        } else {
-            $items = $conn->query("SELECT * FROM models ORDER BY name");
+            $sql = "SELECT * FROM models WHERE 1=1 ";
+            if ($name != '') {
+                $sql .= "AND name like '%$name%' ";
+            }
+            if ($part_number != '') {
+                $sql .= "AND part_number like '%$part_number%' ";
+            }
+            if ($category != '') {
+                $sql .= "AND category_id = '$category_id' ";
+            }
         }
+        else {
+            $sql = "SELECT * from models ";
+        }
+        $sql .= "ORDER by name";
+
+        $items = $conn->query($sql);
         if (!$items) {
             die("Query Error: " . $conn->error);
         }
