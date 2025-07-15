@@ -38,17 +38,24 @@
         <form method = "GET" action = "">
             Name: <input type="text" name = "name" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
-            Category: <input type="text" name = "category" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
-            <!--<?php 
-                        include '../db.php';
-                        echo "Category: <select name='model_name'>";
-                        $models = $conn->query("SELECT DISTINCT * FROM models ORDER BY name");
-                        while ($model = $models->fetch_assoc()) {
-                            echo "<option value='" . htmlspecialchars($model['category']) . "'>" . htmlspecialchars($model['category']) . "</option>";
-                        }
-                        echo "</select><br>";
-                    ?> -->
+            <!-- Category: <input type="text" name = "category" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>"> -->
+            <?php 
+                include '../db.php';
+
+                $selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+                echo "Category: <select name='category'>";
+                $defaultSelected = ($selectedCategory === '') ? 'selected' : '';
+                echo "<option value='' $defaultSelected>-- Select Category --</option>";
+
+                $categories = $conn->query("SELECT DISTINCT name FROM categories ORDER BY name");
+                while ($category = $categories->fetch_assoc()) {
+                    $name = htmlspecialchars($category['name']);
+                    $isSelected = ($name === $selectedCategory) ? 'selected' : '';
+                    echo "<option value='$name' $isSelected>$name</option>";
+                }
+                echo "</select><br>";
+            ?>
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
@@ -62,10 +69,12 @@
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
+        $category_row = $conn->query(query: "SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
+        $category_id = isset($category_row['id']) ? $category_row['id'] : '';
 
         if ($searched !== "") {
             $items = $conn->query("SELECT * FROM models
-            WHERE name like '%$name%' AND category like '%$category%' 
+            WHERE name like '%$name%' AND category_id = '%$category_id%' 
             AND part_number like '%$part_number%'
             GROUP BY name");
         } else {
