@@ -44,10 +44,18 @@
     }
     else if ($model_result && $model_result->num_rows > 0) {
         $model = $model_result->fetch_assoc();
+        $categories = $conn->query("SELECT DISTINCT category FROM models");
+        $model_names = $conn->query("SELECT name FROM models");
         echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
         echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
         echo "Model ID: " . htmlspecialchars($model['id']) . "<br>";
-        echo "Model Name: <input type='text' name='name' value='" . htmlspecialchars($model['name']) . "'><br>";
+        echo "Model Name: <select name='name'>";
+        while ($row = $model_names->fetch_assoc()) {
+            $name = htmlspecialchars($row['name']);
+            $selected = ($row['name'] === $model['name']) ? 'selected' : '';
+            echo "<option value='$name' $selected>$name</option>";
+        }
+        echo "</select><br>";
         echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
         
         
@@ -62,7 +70,7 @@
         
         
         echo "Image: <br>";
-        echo '<img src="get_image.php?id=' . $model['id'] . '" width="75" height="75"><br>';
+        echo '<img src="get_image.php?id=' . $model['id'] . '" width="300" height="300"><br>';
         echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
         /*
         include '../db.php';
