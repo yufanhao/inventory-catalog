@@ -88,7 +88,6 @@
         }
         $sql .= "ORDER by name";
 
-        echo $sql;
         $items = $conn->query($sql);
         if (!$items) {
             die("Query Error: " . $conn->error);
