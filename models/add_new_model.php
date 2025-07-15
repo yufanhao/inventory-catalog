@@ -3,7 +3,16 @@
         <form action="insert_model.php" method="POST" enctype="multipart/form-data">
             Name: <input type="text" name="name"><br>   
             Part Number: <input type="text" name="part_number"><br>
-            Category: <input type="text" name="category"><br>
+            <!--Category: <input type="text" name="category"><br>-->
+            <?php 
+                include '../db.php';
+                echo "Category: <select name='category'>";
+                $categories = $conn->query("SELECT DISTINCT * FROM categories ORDER BY name");
+                while ($category = $categories->fetch_assoc()) {
+                    echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
+                }
+                echo "</select><br>";
+                ?>
             Image: <input type="file" name="image" width="50" height="50"><br>
             <input type="submit">
         </form>
