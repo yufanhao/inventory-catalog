@@ -60,7 +60,6 @@
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
             <button type = "submit">Search</button>
-            <!--<a href="search_model.php"><button type = "button">Advanced Search/Filter</button></a>-->
         </form>
 
         <?php
