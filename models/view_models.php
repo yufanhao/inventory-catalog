@@ -38,17 +38,16 @@
         <form method = "GET" action = "">
             Name: <input type="text" name = "name" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
-            Category: <input type="text" name = "category" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>">
-            <!--<?php 
-                        include '../db.php';
-                        echo "Category: <select name='model_name'>";
-                        $models = $conn->query("SELECT DISTINCT * FROM models ORDER BY name");
-                        while ($model = $models->fetch_assoc()) {
-                            echo "<option value='" . htmlspecialchars($model['category']) . "'>" . htmlspecialchars($model['category']) . "</option>";
-                        }
-                        echo "</select><br>";
-                    ?> -->
+            <?php 
+                include '../db.php';
+                echo "Category: <select name='category_name'>";
+                
+                $categories = $conn->query("SELECT DISTINCT name FROM categories ORDER BY name");
+                while ($category = $categories->fetch_assoc()) {
+                    echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
+                }
+                echo "</select><br>";
+            ?> 
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
@@ -60,17 +59,52 @@
         include '../db.php';
         $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
-        $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
+        $cat_name = isset($_GET['category_name']) ? $conn->real_escape_string($_GET['category_name']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
 
+
         if ($searched !== "") {
-            $items = $conn->query("SELECT * FROM models
-            WHERE name like '%$name%' AND category like '%$category%' 
-            AND part_number like '%$part_number%'
-            GROUP BY name");
+            $cat_id = $conn->query("SELECT id FROM categories WHERE name LIKE '$cat_name'");
+            $id = $cat_id->fetch_assoc();
+            $id = $id['id'];
+            //echo "debug: " . $id;
+            $items = "SELECT * FROM models ";
+            $srch = False;
+
+            if($name !== "") {
+                $items = $items . " WHERE name like '%$name%'";
+                $srch = True;
+            }
+            
+            if($id !== "") 
+                if($id !== '9')
+                   { // if category isn't blank
+                   if($srch)
+                     $items = $items . " AND";
+                   else 
+                    $items = $items . " WHERE";
+                   $items = $items . " category_id like '$id'";
+                   $srch = True;
+                }
+
+            if($part_number !== "") {
+                if($srch)
+                    $items = $items . " AND";
+                else 
+                    $items = $items . " WHERE";
+                $items = $items . " part_number like '%$part_number%'";
+                $srch = True;
+            }
+
+            $items = $items . " ORDER BY name";
+            echo $items;
+
+            $items = $conn->query($items);
+
         } else {
             $items = $conn->query("SELECT * FROM models ORDER BY name");
         }
+
         if (!$items) {
             die("Query Error: " . $conn->error);
         }

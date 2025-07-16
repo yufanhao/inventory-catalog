@@ -40,7 +40,6 @@ require_once('../db.php');
     $username = isset($_GET['username']) ? $conn->real_escape_string($_GET['username']) : '';
 
     $model_id = $_GET["model_id"];
-    $user_id = $_GET['user_id'];
 
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
