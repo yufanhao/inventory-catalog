@@ -66,7 +66,7 @@
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
     echo"<h2>".$model['name']."</h2>"; // model_name
-    echo "<img src='../models/get_image.php?id=" . $model_id . "' width='150' height='150'>";
+    echo "<img src='../models/get_image.php?id=" . $model_id . "' width='300' height='300'>";
 
     echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Serial Number</th><th>Expiration</th><th>Box</th><th>Cabinet</th>
@@ -102,14 +102,21 @@
         else
             echo "<td>Expired</td>";
 
+        // echo "<td>
+        //     <form method='POST' action='loan_item.php'>
+        //         <input type='hidden' name='id' value='" . $row['id'] . "'>
+        //         <input type='hidden' name='user_action' value='" . $user_action . "'>
+        //         <input type='hidden' name='model_id' value='" . $model_id . "'>
+        //         <button type='submit' $disabled>". $user_action . "  Item</button>
+        //     </form>
         echo "<td>
-            <form method='POST' action='loan_item.php'>
-                <input type='hidden' name='id' value='" . $row['id'] . "'>
-                <input type='hidden' name='user_action' value='" . $user_action . "'>
+            <form method='POST' action='insert_item.php'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
-                <button type='submit' $disabled>". $user_action . "  Item</button>
+                <input type='hidden' name='expiration' value='" . $row['expiration'] . "'>
+                <input type='hidden' name='serial_number' value='" . $row['serial_number'] . "'>
+                <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
+                <button type='submit'>Add Item</button>
             </form>
-        
     
             <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
                 <input type='hidden' name='id' value='" . $row['id'] . "'>

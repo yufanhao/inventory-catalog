@@ -26,9 +26,9 @@
 
         <a href="../models/add_new_model.php">
             <button>Add new model</button>
-        </a><br>
+        </a>
 
-         <a href="../add_new_category.php">
+         <a href="../categories/add_new_category.php">
             <button>Add new category</button>
         </a>
         
@@ -54,7 +54,7 @@
                     $isSelected = ($name === $selectedCategory) ? 'selected' : '';
                     echo "<option value='$name' $isSelected>$name</option>";
                 }
-                echo "</select><br>";
+                echo "</select>";
             ?>
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
@@ -93,7 +93,7 @@
         }
         
         echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
-        echo "<tr><th>Model Name</th><th>Part Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";
+        echo "<tr><th>Model Name</th><th>Part Number</th><th>Category</th><th>Image</th><th>Quantity</th><th>Action</th></tr>";
         while ($row = $items->fetch_assoc()) {
             $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
             echo "<tr>";
@@ -103,12 +103,17 @@
             $category = $conn->query("SELECT name FROM categories where id = '$category_id'")->fetch_assoc();
             echo "<td>" . $category['name'] ."</td>";
             echo "<td><img src='get_image.php?id=" . $row['id'] . "' width='75' height='75'></td>";
-            echo "<td>" . $count["quantity"]."</td>";
+            echo "<td>" . $count["quantity"]. "</td>";
             echo "<td>
             <form method='POST' action='update_model.php'>
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                 <button type='submit'>Edit Model</button>
-            </form></td>";   
+            </form>
+            <form method='POST' action='../items/add_new_item.php'>
+                <input type='hidden' name='model_name' value='" . htmlspecialchars($row['name']) . "'>
+                <button type='submit'>Add Item</button>
+            </form>
+            </td>";   
             echo "</tr>";
         }
         

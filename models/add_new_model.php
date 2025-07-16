@@ -24,12 +24,16 @@
             <input type="submit">
         </form>
         
-    <h2>Cancel and redirect:</h2>
+    <h2>Other:</h2>
         <a href="../welcome_page.php">
             <button>Return to welcome page</button>
         </a>
 
         <a href="../models/view_models.php">
             <button>View Inventory</button>
+        </a>
+
+        <a href="../categories/add_new_category.php">
+            <button>Add new category</button>
         </a>
 </html>
