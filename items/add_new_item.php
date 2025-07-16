@@ -5,9 +5,15 @@
             <?php 
             include '../db.php';
             echo "Model Name: <select name='model_name'>";
-            $models = $conn->query("SELECT * FROM models");
+            $selectedModel = isset($_POST['model_name']) ? $_POST['model_name'] : '';
+            $defaultSelected = ($selectedModel === '') ? 'selected' : '';
+            echo "<option value='' $defaultSelected>-- Select Model --</option>";
+
+            $models = $conn->query("SELECT DISTINCT name FROM models ORDER BY name");
             while ($model = $models->fetch_assoc()) {
-                echo "<option value='" . htmlspecialchars($model['name']) . "'>" . htmlspecialchars($model['name']) . "</option>";
+                $name = htmlspecialchars($model['name']);
+                $isSelected = ($name === $selectedModel) ? 'selected' : '';
+                echo "<option value='$name' $isSelected>$name</option>";
             }
             echo "</select><br>";
             ?>
@@ -17,6 +23,8 @@
                 <option value="cabinet">Cabinet</option>
                 <option value="shelf">Shelf</option>
                 <option value="floor">Floor</option>
+                <option value="cubicle">Cubicle</option>
+                <option value="customer">Customer</option>
                 <option value="other">Other</option></select><br>
             Location Number(i.e. box number, etc): <input type="number" name="number"><br>
             Quantity: <input type="number" name="quantity"><br>

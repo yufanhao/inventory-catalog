@@ -26,9 +26,9 @@
 
         <a href="../models/add_new_model.php">
             <button>Add new model</button>
-        </a><br>
+        </a>
 
-         <a href="../add_new_category.php">
+         <a href="../categories/add_new_category.php">
             <button>Add new category</button>
         </a>
         
@@ -38,21 +38,28 @@
         <form method = "GET" action = "">
             Name: <input type="text" name = "name" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
+            <!-- Category: <input type="text" name = "category" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['category']) ? htmlspecialchars($_GET['category']) : ''; ?>"> -->
             <?php 
                 include '../db.php';
-                echo "Category: <select name='category_name'>";
-                
+
+                $selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+                echo "Category: <select name='category'>";
+                $defaultSelected = ($selectedCategory === '') ? 'selected' : '';
+                echo "<option value='' $defaultSelected>-- Select Category --</option>";
+
                 $categories = $conn->query("SELECT DISTINCT name FROM categories ORDER BY name");
                 while ($category = $categories->fetch_assoc()) {
-                    echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
+                    $name = htmlspecialchars($category['name']);
+                    $isSelected = ($name === $selectedCategory) ? 'selected' : '';
+                    echo "<option value='$name' $isSelected>$name</option>";
                 }
-                echo "</select><br>";
-            ?> 
+                echo "</select>";
+            ?>
             Part Number: <input type="text" name = "part_number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['part_number']) ? htmlspecialchars($_GET['part_number']) : ''; ?>">
             <input type="hidden" name="searched" value="searched">
             <button type = "submit">Search</button>
-            <!--<a href="search_model.php"><button type = "button">Advanced Search/Filter</button></a>-->
         </form>
 
         <?php
@@ -62,55 +69,32 @@
         $cat_name = isset($_GET['category_name']) ? $conn->real_escape_string($_GET['category_name']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
 
-
+        $category_row = $conn->query("SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
+        $category_id = isset($category_row['id']) ? $category_row['id'] : '';
         if ($searched !== "") {
-            $cat_id = $conn->query("SELECT id FROM categories WHERE name LIKE '$cat_name'");
-            $id = $cat_id->fetch_assoc();
-            $id = $id['id'];
-            //echo "debug: " . $id;
-            $items = "SELECT * FROM models ";
-            $srch = False;
-
-            if($name !== "") {
-                $items = $items . " WHERE name like '%$name%'";
-                $srch = True;
+            $sql = "SELECT * FROM models WHERE 1=1 ";
+            if ($name != '') {
+                $sql .= "AND name like '%$name%' ";
             }
-            
-            if($id !== "") 
-                if($id !== '9')
-                   { // if category isn't blank
-                   if($srch)
-                     $items = $items . " AND";
-                   else 
-                    $items = $items . " WHERE";
-                   $items = $items . " category_id like '$id'";
-                   $srch = True;
-                }
-
-            if($part_number !== "") {
-                if($srch)
-                    $items = $items . " AND";
-                else 
-                    $items = $items . " WHERE";
-                $items = $items . " part_number like '%$part_number%'";
-                $srch = True;
+            if ($part_number != '') {
+                $sql .= "AND part_number like '%$part_number%' ";
             }
-
-            $items = $items . " ORDER BY name";
-            echo $items;
-
-            $items = $conn->query($items);
-
-        } else {
-            $items = $conn->query("SELECT * FROM models ORDER BY name");
+            if ($category != '') {
+                $sql .= "AND category_id = '$category_id' ";
+            }
         }
+        else {
+            $sql = "SELECT * from models ";
+        }
+        $sql .= "ORDER by name";
 
+        $items = $conn->query($sql);
         if (!$items) {
             die("Query Error: " . $conn->error);
         }
         
         echo "<table border='1' cellpadding='8' style = 'margin-top: 10px;'>";
-        echo "<tr><th>Model Name</th><th>Part Number</th><th>Category</th><th>Image</th><th>Quantity</th></tr>";
+        echo "<tr><th>Model Name</th><th>Part Number</th><th>Category</th><th>Image</th><th>Quantity</th><th>Action</th></tr>";
         while ($row = $items->fetch_assoc()) {
             $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['id'] . "'")->fetch_assoc();
             echo "<tr>";
@@ -120,12 +104,17 @@
             $category = $conn->query("SELECT name FROM categories where id = '$category_id'")->fetch_assoc();
             echo "<td>" . $category['name'] ."</td>";
             echo "<td><img src='get_image.php?id=" . $row['id'] . "' width='75' height='75'></td>";
-            echo "<td>" . $count["quantity"]."</td>";
+            echo "<td>" . $count["quantity"]. "</td>";
             echo "<td>
             <form method='POST' action='update_model.php'>
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                 <button type='submit'>Edit Model</button>
-            </form></td>";   
+            </form>
+            <form method='POST' action='../items/add_new_item.php'>
+                <input type='hidden' name='model_name' value='" . htmlspecialchars($row['name']) . "'>
+                <button type='submit'>Add Item</button>
+            </form>
+            </td>";   
             echo "</tr>";
         }
         
