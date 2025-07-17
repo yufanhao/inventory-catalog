@@ -1,3 +1,8 @@
+<?php
+session_start();
+require_once('../db.php');
+?>
+
 <html>
     <body>
     <h2>Filter Items:</h2>
@@ -17,11 +22,17 @@
                 <option value="other">Other</option></select>
             Number(i.e. box number, etc): <input type="number" name = "number" placeholder = "Search items..." value =
                 "<?php echo isset($_GET['number']) ? htmlspecialchars($_GET['number']) : ''; ?>"></br>
+
+            Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
             <input type="hidden" name="searched" value="searched">
             <input type="hidden" name="model_id" value="<?php echo isset($_GET['model_id']) ? htmlspecialchars($_GET['model_id']) : ''; ?>">
-            <input type="hidden" name="user_ID" value="<?php echo isset($_GET['user_ID']) ? htmlspecialchars($_GET['user_ID']) : ''; ?>">
+            
             <button type="submit">Search</button>
         </form>
+        
+       
+
+
 
 <?php
     include('../db.php');
@@ -33,17 +44,19 @@
     $before_after = isset($_GET['before_after']) ? $conn->real_escape_string($_GET['before_after']) : '';
     $location_type = isset($_GET['location_type']) ? $conn->real_escape_string($_GET['location_type']) : '';
     $location_number = isset($_GET['number']) ? $conn->real_escape_string($_GET['number']) : '';
-    //$user_ID = isset($_GET['user_ID']) ? $conn->real_escape_string($_GET['user_ID']) : '';
+    $user_name = isset($_GET['user_name']) ? $conn->real_escape_string($_GET['user_name']) : '';
 
     $model_id = $_GET["model_id"];
-    $user_ID = $_GET['user_ID'];
-    echo $user_ID;
 
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
     $model = $conn->query($model_sql)->fetch_assoc();
 
-    $selection = "SELECT * FROM items WHERE 1=1";
+    $selection = "SELECT i.id, i.serial_number, i.expiration, i.location_id, i.model_id, i.user_id, u.username 
+                 FROM items i
+                 left join users u on u.id = i.user_id
+                 WHERE 1=1";
+
     if ($model_id != '' AND $model != null) {  
         $selection = $selection . " AND model_id = $model_id"; 
     }
@@ -60,8 +73,17 @@
             $location_id = $location['id'];
             $selection .= " AND location_id = '$location_id'";
         }
+        if ($user_name !== "") {
+            // Handle search for Available vs. usernames that start with 'A...'
+            if (strpos('Available', $user_name) !== FALSE) {
+                $selection = $selection . " AND ((username IS NULL) OR (username like '%$user_name%'))";
+            }
+            else {
+            $selection = $selection . " AND username  LIKE '%$user_name%'";
+            }
+        }
     }  
-
+        
     $items = $conn->query($selection); // this is the base query;
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
 
@@ -88,15 +110,23 @@
         echo "<td>". $location_array['customer'] ."</td>";
         echo "<td>". $location_array['building'] ."</td>";
 
-        if ($row['user_ID'] === null) {
+        $user_id = $row['user_id'];
+        if ($user_id === '0') {
             $user_name = 'Available';
+            $user_action = 'Loan';
+            $disabled = '';   // enable loan button if item available.
         }
         else {
-            $user = $conn->query("SELECT username, email from users where id = " . $row['user_ID']);
+            $user = $conn->query("SELECT username, email from users where id = " . $row['user_id']);
             $user_row = $user->fetch_assoc(); // check for non-zero rows.
             $user_name = $user_row['username'];
-            $user_email = $user_row['email'];
+            $user_email = $user_row['email'];  // TODO: Use as link to username.
+            $user_action = 'Return';
+            // only enable return loan if current user is the loaner user
+            echo $_SESSION["user_id"];
+            $disabled = ($user_id !== $_SESSION["user_id"]) ? 'disabled' : '';
         }
+
 
         echo "<td><a href='mailto:" . $user_email . "'>" . $user_name ."</td>";
         
@@ -106,15 +136,16 @@
         else
             echo "<td>Expired</td>";
 
-        // echo "<td>
-        //     <form method='POST' action='loan_item.php'>
-        //         <input type='hidden' name='id' value='" . $row['id'] . "'>
-        //         <input type='hidden' name='user_action' value='" . $user_action . "'>
-        //         <input type='hidden' name='model_id' value='" . $model_id . "'>
-        //         <button type='submit' $disabled>". $user_action . "  Item</button>
-        //     </form>
-        echo "<td>
-            <form method='POST' action='insert_item.php'>
+
+         echo "<td>
+             <form method='POST' action='loan_item.php'>
+                 <input type='hidden' name='id' value='" . $row['id'] . "'>
+                 <input type='hidden' name='user_action' value='" . $user_action . "'>
+                 <input type='hidden' name='model_id' value='" . $model_id . "'>
+                 <button type='submit' $disabled>". $user_action . "  Item</button>
+             </form>
+
+             <form method='POST' action='insert_item.php'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <input type='hidden' name='expiration' value='" . $row['expiration'] . "'>
                 <input type='hidden' name='serial_number' value='" . $row['serial_number'] . "'>

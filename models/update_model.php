@@ -9,8 +9,7 @@
     $part_number = $_POST['part_number'];
     $category = $_POST['category'];
     $image = $_FILES['image'];
-    $image = $_FILES['image'];
-
+    
     $model_sql = "SELECT * FROM models WHERE id = $id";
     $model_result = $conn->query($model_sql);
     
@@ -64,7 +63,8 @@
         while ($category = $categories->fetch_assoc()) {
             echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
         }
-        echo "</select><br>";        
+        echo "</select>";        
+        echo '<input type="submit" formaction="../categories/add_new_category.php" value="New"><br>';
         echo "Image: <br>";
         echo '<img src="get_image.php?id=' . $model['id'] . '" width="300" height="300"><br>';
         echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
