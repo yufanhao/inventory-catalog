@@ -15,7 +15,7 @@ require_once('../db.php');
         if ($password == $user['password']) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
+            $_SESSION['clearance'] = $user['clearance'];
             echo "Login successful! <br>";
             echo "<form action ='../welcome_page.php' method = 'get'>
               <button type = 'submit'>Continue to Main Page</button>
