@@ -70,7 +70,8 @@
 
     echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Serial Number</th><th>Expiration</th><th>Box</th><th>Cabinet</th>
-        <th>Shelf</th><th>Floor</th><th>Reserved</th><th>Status</th><th>Actions</th></tr>";
+        <th>Shelf</th><th>Cubicle</th><th>Floor</th><th>Customer</th><th>Building</th><th>Reserved</th>
+        <th>Status</th><th>Actions</th></tr>";
 
     while ($row = $items->fetch_assoc()) {
         $location_id = $row['location_id'];
@@ -83,6 +84,9 @@
         echo "<td>". $location_array['cabinet'] ."</td>";
         echo "<td>". $location_array['shelf'] ."</td>";
         echo "<td>". $location_array['floor'] ."</td>";
+        echo "<td>". $location_array['cubicle'] ."</td>";
+        echo "<td>". $location_array['customer'] ."</td>";
+        echo "<td>". $location_array['building'] ."</td>";
 
         if ($row['user_ID'] === null) {
             $user_name = 'Available';

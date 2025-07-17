@@ -6,7 +6,7 @@
     $model_name =  $_POST["model_name"];
     $expiration =  $_POST["expiration"];
     $location_type =  $_POST["location_type"];
-    $location_number =  $_POST["number"];
+    $location_name =  $_POST["name"];
     if (isset($_POST['quantity'])) {
         $quantity =  $_POST["quantity"];
     } else {
@@ -17,6 +17,7 @@
     if (isset($_POST['model_id'])) {
         $model_id = $_POST['model_id'];
     } else {
+        $model_check_sql = "SELECT id FROM models WHERE name = '$model_name'";
         $model_check_result = $conn->query($model_check_sql);
         $model = $model_check_result->fetch_assoc();
         if ($model_check_result->num_rows <= 0) {
@@ -36,11 +37,14 @@
     if (isset($_POST['location_id'])) {
         $location_id = $_POST['location_id'];
     } else {
-        $location_check_sql = "SELECT * FROM locations WHERE number = $location_number && type = '$location_type'";
+        $location_name_escaped = $conn->real_escape_string($location_name);
+        $location_type_escaped = $conn->real_escape_string($location_type);
+
+        $location_check_sql = "SELECT * FROM locations WHERE name = '$location_name_escaped' AND type = '$location_type_escaped'";
         $location_check_result = $conn->query($location_check_sql);
 
         if ($location_check_result->num_rows <= 0) {
-            echo "Location $location_type $location_number does not exist. Please create that location first.";
+            echo "Location $location_type $location_name does not exist. Please create that location first.";
             echo "<form action ='../locations/insert_location.php' method = 'get'>
                     <button type = 'submit'>Create Location</button> 
                     </form>";
@@ -55,7 +59,6 @@
 
     $sql = "INSERT INTO items (serial_number, expiration, model_id, location_id) 
            VALUES ('$serial_number', '$expiration', '$model_id', '$location_id')";
-    echo $sql;
     for ($i = 0; $i < $quantity; $i++) {
         if ($conn->query($sql) !== TRUE ) {
             echo "Error: " . $conn->error;

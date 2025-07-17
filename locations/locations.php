@@ -13,21 +13,19 @@
             <button>Add New Location</button>
         </a>
             
-        <h2>Floors List:</h2>
+        <h2>Locations List:</h2>
 
         <?php
         include '../db.php';
-        $result = $conn->query("SELECT * FROM locations WHERE type = 'floor'");
+        $result = $conn->query("SELECT * FROM locations WHERE type = 'building'");
         
         echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>ID</th><th>Type</th><th>Number/Name</th><th>Description</th></tr>";
         while ($row = $result->fetch_assoc()) {
-
-        
             echo "<tr>";
             echo "<td>" . $row['id'] .'</td>';
             echo "<td>" . $row["type"] .'</td>';
-            echo "<td><a href='get_location_by_id.php?id=" . $row['id'] . "'>" . $row["number"] .'</td>';
+            echo "<td><a href='get_location_by_id.php?id=" . $row['id'] . "'>" . $row["name"] .'</td>';
             echo "<td>" . $row["description"] .'</td>';
             echo "</tr>";
         }

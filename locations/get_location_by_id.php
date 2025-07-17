@@ -37,7 +37,7 @@
             echo "<tr>";
             echo "<td>" . $child_location['id'] . "</td>";
             echo "<td>" . $child_location['type'] . "</td>";
-            echo "<td><a href='get_location_by_id.php?id=" . $child_location['id'] . "'>" . $child_location['number'] . "</td>";
+            echo "<td><a href='get_location_by_id.php?id=" . $child_location['id'] . "'>" . $child_location['name'] . "</td>";
             echo "<td>" . $child_location['description'] . "</td>";
             echo "</tr>";
         }
