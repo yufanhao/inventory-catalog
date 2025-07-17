@@ -66,9 +66,8 @@
         include '../db.php';
         $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
-        $cat_name = isset($_GET['category_name']) ? $conn->real_escape_string($_GET['category_name']) : '';
+        $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
         $part_number = isset($_GET['part_number']) ? $conn->real_escape_string($_GET['part_number']) : '';
-
         $category_row = $conn->query("SELECT id FROM categories WHERE name = '$category'")->fetch_assoc();
         $category_id = isset($category_row['id']) ? $category_row['id'] : '';
         if ($searched !== "") {
