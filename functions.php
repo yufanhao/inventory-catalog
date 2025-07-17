@@ -9,19 +9,22 @@ function get_location($conn, $location_id) {
         'box' => "",
         'cabinet' => "",
         'shelf' => "",
-        'floor' => ""
+        'floor' => "",
+        'building' => "",
+        'cubicle' => "",
+        'customer' => "",
     );
 
     // Traverse up the location hierarchy to get all location types and numbers
-    while ($location_type != 'building' AND $flag == FALSE) {
+    while ($location_type != 'ancestor' AND $flag == FALSE) {
         if (!$location) {
             //echo "Location not found for item. Please check the database.";
             //echo "$location_type" . " asdhkfhksdjhf ";
             $flag = TRUE;
             break;
         }
-        $location_number = $location['number'];
-        $location_array[$location_type] = $location_number;
+        $location_name = $location['name'];
+        $location_array[$location_type] = $location_name;
 
         $parent_id = $location['parent_id'];
         $parent_sql = "SELECT * FROM locations WHERE id = $parent_id";

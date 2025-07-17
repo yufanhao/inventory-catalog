@@ -20,8 +20,8 @@ require_once('../db.php');
                 <option value="shelf">Shelf</option>
                 <option value="floor">Floor</option>
                 <option value="other">Other</option></select>
-            Number(i.e. box number, etc): <input type="number" name = "number" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['number']) ? htmlspecialchars($_GET['number']) : ''; ?>"></br>
+            Location Name(i.e. box number, customer name, etc): <input type="text" name = "location_name" placeholder = "Search items..." value =
+                "<?php echo isset($_GET['location_name']) ? htmlspecialchars($_GET['location_name']) : ''; ?>"></br>
 
             Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
             <input type="hidden" name="searched" value="searched">
@@ -43,7 +43,7 @@ require_once('../db.php');
     $expiration = isset($_GET['expiration']) ? $conn->real_escape_string($_GET['expiration']) : '';
     $before_after = isset($_GET['before_after']) ? $conn->real_escape_string($_GET['before_after']) : '';
     $location_type = isset($_GET['location_type']) ? $conn->real_escape_string($_GET['location_type']) : '';
-    $location_number = isset($_GET['number']) ? $conn->real_escape_string($_GET['number']) : '';
+    $location_name = isset($_GET['location_name']) ? $conn->real_escape_string($_GET['location_name']) : '';
     $user_name = isset($_GET['user_name']) ? $conn->real_escape_string($_GET['user_name']) : '';
 
     $model_id = $_GET["model_id"];
@@ -68,8 +68,8 @@ require_once('../db.php');
         if ($expiration !== "") {
             $selection .= " AND expiration $before_after '$expiration'";
         }
-        if ($location_type !== "" && $location_number !== "") {
-            $location = $conn->query("SELECT id FROM locations WHERE type = '$location_type' AND number = '$location_number'")->fetch_assoc();
+        if ($location_type !== "" && $location_name !== "") {
+            $location = $conn->query("SELECT id FROM locations WHERE type = '$location_type' AND name = '$location_name'")->fetch_assoc();
             $location_id = $location['id'];
             $selection .= " AND location_id = '$location_id'";
         }
@@ -82,11 +82,10 @@ require_once('../db.php');
             $selection = $selection . " AND username  LIKE '%$user_name%'";
             }
         }
-    }  
-        
+    }
+
     $items = $conn->query($selection); // this is the base query;
     // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
-
     echo"<h2>".$model['name']."</h2>"; // model_name
     echo "<img src='../models/get_image.php?id=" . $model_id . "' width='300' height='300'>";
 
@@ -94,11 +93,10 @@ require_once('../db.php');
         echo "<tr><th>Serial Number</th><th>Expiration</th><th>Box</th><th>Cabinet</th>
         <th>Shelf</th><th>Cubicle</th><th>Floor</th><th>Customer</th><th>Building</th><th>Reserved</th>
         <th>Status</th><th>Actions</th></tr>";
-
+    
     while ($row = $items->fetch_assoc()) {
         $location_id = $row['location_id'];
         $location_array = get_location($conn, $location_id);
-        
         echo "<tr>";
         echo "<td><a href='get_item_by_id.php?id=" . $row['id'] . "'>" . $row['serial_number'] ."</td>";
         echo "<td>" . $row['expiration'] ."</td>";
