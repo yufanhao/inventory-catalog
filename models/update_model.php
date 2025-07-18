@@ -17,6 +17,7 @@
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             // If a new image is uploaded, handle the file upload
             $image_type = $_FILES['image']['type'];
+            echo $_FILES['image'];
             $category_id = $conn->query("SELECT id from categories where name = '$category'")->fetch_assoc();
             $c_id = $category_id['id'];
             $image_data = $conn->real_escape_string(file_get_contents($_FILES['image']['tmp_name']));
