@@ -26,13 +26,9 @@ require_once('../db.php');
             Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
             <input type="hidden" name="searched" value="searched">
             <input type="hidden" name="model_id" value="<?php echo isset($_GET['model_id']) ? htmlspecialchars($_GET['model_id']) : ''; ?>">
-            
+
             <button type="submit">Search</button>
-        </form>
-        
-       
-
-
+    </form>
 
 <?php
     include('../db.php');
@@ -47,6 +43,7 @@ require_once('../db.php');
     $user_name = isset($_GET['user_name']) ? $conn->real_escape_string($_GET['user_name']) : '';
 
     $model_id = $_GET["model_id"];
+
 
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
@@ -108,6 +105,7 @@ require_once('../db.php');
         echo "<td>". $location_array['customer'] ."</td>";
         echo "<td>". $location_array['building'] ."</td>";
 
+        //echo $user_id . '</br>';
         $user_id = $row['user_id'];
         if ($user_id === '0') {
             $user_name = 'Available';
@@ -135,6 +133,10 @@ require_once('../db.php');
             echo "<td>Expired</td>";
 
 
+        //echo $row['user_id'] . '</br>';
+        //echo $user_action . '</br>';
+        
+
          echo "<td>
              <form method='POST' action='loan_item.php'>
                  <input type='hidden' name='id' value='" . $row['id'] . "'>
@@ -150,8 +152,16 @@ require_once('../db.php');
                 <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
                 <button type='submit'>Add Item</button>
             </form>
-    
-            <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
+
+            <form method='POST' action='update_item.php'>
+                <input type='hidden' name='id' value=" . $row['id'] . ">
+                <input type='hidden' name='model_id' value=" . $row['expiration'] . ">
+                <input type='hidden' name='serial_number' value=" . $row['serial_number'] . ">
+                <input type='hidden' name='model_id' value=" . $model_id . ">
+                <button type='submit'>Edit Item</button>
+            </form>
+
+             <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <button type='submit'>Delete Item</button>

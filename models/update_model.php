@@ -9,8 +9,6 @@
     $part_number = $_POST['part_number'];
     $category = $_POST['category'];
     $image = $_FILES['image'];
-    // echo 'deggdbsvewrthvdgf ' . $category;
-    
 
     $model_sql = "SELECT m.id, m.name, m.part_number, m.category_id, c.name as category
     FROM models m
@@ -63,8 +61,6 @@
         echo "</select><br>";
         echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
         echo "Category: <select name='category'>";
-
-        
         $categories = $conn->query("SELECT DISTINCT name FROM categories");
         while ($row = $categories->fetch_assoc()) {
             $cat_name = htmlspecialchars($row['name']);
