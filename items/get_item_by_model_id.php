@@ -7,21 +7,21 @@ require_once('../db.php');
     <body>
     <h2>Filter Items:</h2>
     <form method = "GET" action = "">
-            Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>"></br>
-            Expiration: <input type="date" name="expiration" value = 
-                "<?php echo isset($_GET["expiration"]) ? $_GET["expiration"] : ''; ?>">
-            Before/After: <select name="before_after">
-                <option value="<=" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == "<=") echo "selected";?>>Before</option>
-                <option value=">" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == ">") echo "selected";?>>After</option></select><br>
-            Location: <select name="location_type">
-                <option value="box">Box</option>
-                <option value="cabinet">Cabinet</option>
-                <option value="shelf">Shelf</option>
-                <option value="floor">Floor</option>
-                <option value="other">Other</option></select>
-            Location Name(i.e. box number, customer name, etc): <input type="text" name = "location_name" placeholder = "Search items..." value =
-                "<?php echo isset($_GET['location_name']) ? htmlspecialchars($_GET['location_name']) : ''; ?>"></br>
+        Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
+            "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>"></br>
+        Expiration: <input type="date" name="expiration" value = 
+            "<?php echo isset($_GET["expiration"]) ? $_GET["expiration"] : ''; ?>">
+        Before/After: <select name="before_after">
+            <option value="<=" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == "<=") echo "selected";?>>Before</option>
+            <option value=">" <?php if (isset($_GET["before_after"]) && $_GET["before_after"] == ">") echo "selected";?>>After</option></select><br>
+        Location: <select name="location_type">
+            <option value="box">Box</option>
+            <option value="cabinet">Cabinet</option>
+            <option value="shelf">Shelf</option>
+            <option value="floor">Floor</option>
+            <option value="other">Other</option></select>
+        Location Name(i.e. box number, customer name, etc): <input type="text" name = "location_name" placeholder = "Search items..." value =
+            "<?php echo isset($_GET['location_name']) ? htmlspecialchars($_GET['location_name']) : ''; ?>"></br>
 
             Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
             <input type="hidden" name="searched" value="searched">
