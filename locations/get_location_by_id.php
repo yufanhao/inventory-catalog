@@ -51,7 +51,7 @@
         echo "<tr><th>Name</th><th>Image</th><th>Quantity</th></tr>";
         while ($row = $items->fetch_assoc()) {
             // Counts the quantity of each item by name
-            $count = $conn->query("SELECT COUNT(*) as quantity from items where model_id = '" . $row['model_id'] . "'")->fetch_assoc();
+            $count = $conn->query("SELECT COUNT(*) as quantity from items where 1=1 AND model_id = '" . $row['model_id'] . "' AND location_id IN (" . implode(',', $child_ids) . ") GROUP BY model_id")->fetch_assoc();
             $model_name = fetch_row_data($conn, 'models', $row['model_id'], 'name');
             echo "<tr>";
             echo "<td><a href='../items/get_item_by_model_id.php?model_id=" . $row['model_id'] . "'>" . htmlspecialchars($model_name) . "</a></td>";

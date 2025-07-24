@@ -120,7 +120,7 @@
             echo "Error: " . $conn->error;
         }
         echo "<form action='../models/view_models.php' method='get'>
-        <button type = 'submit'>Return to Inventory</button>
+            <button type = 'submit'>Return to Inventory</button>
             </form>";
         $conn->close();
     }
