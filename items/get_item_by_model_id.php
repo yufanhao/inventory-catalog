@@ -1,11 +1,59 @@
 <?php
-session_start();
-require_once('../db.php');
+    session_start();
+    require_once('../db.php');
 ?>
+    <html>
+        <style>
+            .item_action_group {
+                list-style-type: none;
+                padding: 10px 0;
+                display: inline-flex;
+                justify-content: space-between;
+            }
+            .item_action_button {
+                padding-right: 10px;
+            }
 
-<html>
-    <body>
-    <h2>Filter Items:</h2>
+            .pagination {
+                list-style-type: none;
+                padding: 10px 0;
+                display: inline-flex;
+                justify-content: space-between;
+                box-sizing: border-box;
+            }
+            .pagination li {
+                box-sizing: border-box;
+                padding-right: 10px;
+            }
+            .pagination li a {
+                box-sizing: border-box;
+                background-color: #e2e6e6;
+                padding: 8px;
+                text-decoration: none;
+                font-size: 12px;
+                font-weight: bold;
+                color: #616872;
+                border-radius: 4px;
+            }
+            .pagination li a:hover {
+                background-color: #d4dada;
+            }
+            .pagination .next a, .pagination .prev a {
+                text-transform: uppercase;
+                font-size: 12px;
+            }
+            .pagination .currentpage a {
+                background-color: #518acb;
+                color: #fff;
+            }
+            .pagination .currentpage a:hover {
+                background-color: #518acb;
+            }
+        </style>
+
+        <body>
+        <h2>Filter Items:</h2>
+ 
     <form method = "GET" action = "">
         Serial Number: <input type="text" name = "serial_number" placeholder = "Search items..." value =
             "<?php echo isset($_GET['serial_number']) ? htmlspecialchars($_GET['serial_number']) : ''; ?>"></br>
@@ -43,8 +91,6 @@ require_once('../db.php');
     $user_name = isset($_GET['user_name']) ? $conn->real_escape_string($_GET['user_name']) : '';
 
     $model_id = $_GET["model_id"];
-
-
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
     $model = $conn->query($model_sql)->fetch_assoc();
@@ -81,11 +127,84 @@ require_once('../db.php');
         }
     }
 
-    $items = $conn->query($selection); // this is the base query;
-    // at this point, $items has the final sql to execute include $model_id from url, and other values from filter form.
+    
+    
+    //Pagination: Initialize Variables
+    // TODO: function initialize_pagination($sql, $num_rows_per_page) 
+    $row_count = $conn->query($selection)->num_rows;
+    $num_rows_per_page = 10;
+    
+    $num_of_pages = ceil($row_count / $num_rows_per_page);
+    $page = isset($_GET["page"]) && isset($_GET["page"]) !== '' ? $_GET["page"] : 1; 
+    $starting_row = ($page - 1) * $num_rows_per_page;
+    
+    // construct url parameters, preserve search items. filter out empty key,value pairs.
+    $data = array( 
+        "model_id" => $model_id,
+        "serial_number" => $serial_number,
+        "expiration" => $expiration,
+        "before_after" => $before_after,
+        "location_type" => $location_type,
+        "location_name" => $location_name,
+        "searched" => $searched,
+        "loaner" => $user_name
+    );
+    $data = http_build_query(array_filter($data)); 
+
+    $target="get_item_by_model_id.php?".$data;
+
+
+    // Add LIMIT construct for pagination.
+    $items = $conn->query($selection . ' LIMIT ' . $starting_row . ', ' . $num_rows_per_page ); 
+
     echo"<h2>".$model['name']."</h2>"; // model_name
     echo "<img src='../models/get_image.php?id=" . $model_id . "' width='300' height='300'>";
 
+
+    // Pagination: Display section, using styles defined at the top of the page.  
+    // TODO: function display_pagination($url_params_array);
+    echo '<div>';
+    if ($num_of_pages > 0) {
+        echo '<ul class="pagination">';
+            if ($page > 1) {
+                echo '<li class="prev"><a href="' . $target . '&page=' . ($page-1) . '">Prev</a></li>';
+            }
+            
+            if ($page > 3) {
+                echo '<li class="start"><a href="' . $target . '&page=' . 1 . '">' . 1 . '</a></li>';
+                echo '<li class="dots">...</li>';
+            }
+
+            if ($page-2 > 0)  {
+                echo '<li class="page"><a href="' . $target . '&page=' . ($page-2) . '">' . ($page-2) . '</a></li>';
+            }
+
+            if ($page-1 > 0) {
+                echo '<li class="page"><a href="' . $target . '&page=' . ($page-1) . '">' . ($page-1) . '</a></li>';
+            }
+            
+            echo '<li class="currentpage"><a href="' . $target . '&page=' . $page . '">' . $page . '</a></li>';
+
+            if ($page+1 < $num_of_pages + 1) {
+                echo '<li class="page"><a href="' . $target . '&page=' . ($page+1) . '">' . ($page+1) . '</a></li>';
+            }
+            if (($page+2) < ($num_of_pages + 1)) {
+                echo '<li class="page"><a href="' . $target . '&page=' . ($page+2) . '">' . ($page+2) . '</a></li>';
+            }
+            
+            if ($page < ($num_of_pages - 2)) {
+                echo '<li class="dots">...</li>';
+                echo '<li class="end"><a href="' . $target . '&page=' . $num_of_pages. '">' . $num_of_pages . '</a></li>';
+            }
+
+            if ($page < $num_of_pages ) {
+                echo '<li class="next"><a href="'. $target . '&page=' . ($page+1) . '">Next</a></li>';
+            }
+        echo '</ul>';
+    }
+    echo '</div>';
+
+    // Display table
     echo "<table border='1' cellpadding='8'>";
         echo "<tr><th>Serial Number</th><th>Expiration</th><th>Box</th><th>Cabinet</th>
         <th>Shelf</th><th>Cubicle</th><th>Floor</th><th>Customer</th><th>Building</th><th>Reserved</th>
@@ -105,7 +224,6 @@ require_once('../db.php');
         echo "<td>". $location_array['customer'] ."</td>";
         echo "<td>". $location_array['building'] ."</td>";
 
-        //echo $user_id . '</br>';
         $user_id = $row['user_id'];
         if ($user_id === '0') {
             $user_name = 'Available';
@@ -119,7 +237,7 @@ require_once('../db.php');
             $user_email = $user_row['email'];  // TODO: Use as link to username.
             $user_action = 'Return';
             // only enable return loan if current user is the loaner user
-            echo $_SESSION["user_id"];
+            //CLEANUP echo $_SESSION["user_id"];
             $disabled = ($user_id !== $_SESSION["user_id"]) ? 'disabled' : '';
         }
 
@@ -130,41 +248,37 @@ require_once('../db.php');
         if ($row['expiration'] === '0000-00-00' || $today < $row['expiration'])
             echo "<td>Usable</td>";
         else
-            echo "<td>Expired</td>";
+            echo "<td>Expired</td>";      
 
-
-        //echo $row['user_id'] . '</br>';
-        //echo $user_action . '</br>';
         
-
-         echo "<td>
-             <form method='POST' action='loan_item.php'>
+         echo "<td class='item_action_group'>
+             <form method='POST' action='loan_item.php' class='item_action_button'>
                  <input type='hidden' name='id' value='" . $row['id'] . "'>
                  <input type='hidden' name='user_action' value='" . $user_action . "'>
                  <input type='hidden' name='model_id' value='" . $model_id . "'>
-                 <button type='submit' $disabled>". $user_action . "  Item</button>
+                 <button type='submit' $disabled>". $user_action . "</button>
              </form>
 
-             <form method='POST' action='insert_item.php'>
+             <form method='POST' action='insert_item.php' class='item_action_button'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <input type='hidden' name='expiration' value='" . $row['expiration'] . "'>
                 <input type='hidden' name='serial_number' value='" . $row['serial_number'] . "'>
                 <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
-                <button type='submit'>Add Item</button>
+                <button type='submit'>Add</button>
             </form>
-
-            <form method='POST' action='update_item.php'>
+            
+            <form method='POST' action='update_item.php' class='item_action_button'>
                 <input type='hidden' name='id' value=" . $row['id'] . ">
                 <input type='hidden' name='model_id' value=" . $row['expiration'] . ">
                 <input type='hidden' name='serial_number' value=" . $row['serial_number'] . ">
                 <input type='hidden' name='model_id' value=" . $model_id . ">
-                <button type='submit'>Edit Item</button>
+                <button type='submit'>Edit</button>
             </form>
 
-             <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">
+             <form method='POST' action='delete_item.php' class='item_action_button' onsubmit=\"return confirm('Are you sure you want to delete this item?');class='item_action_button'\">
                 <input type='hidden' name='id' value='" . $row['id'] . "'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
-                <button type='submit'>Delete Item</button>
+                <button type='submit'>Delete</button>
             </form></td>";
         echo "</tr>";
     }
