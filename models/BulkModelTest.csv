@@ -1,3 +1,4 @@
-﻿name,serial number,category,image_url
-Box2,672657,Cable,C:/wamp/www/inventory-catalog/sun.jpeg
-Box3,672658,Cable,C:/wamp/www/inventory-catalog/sun.jpeg
+﻿name,part number,category_id,image_url
+ABox1,672656,1,/sun.jpeg
+ABox2,672657,2,/sun.jpeg
+ABox3,672658,3,/sun.jpeg

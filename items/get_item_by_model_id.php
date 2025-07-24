@@ -23,11 +23,11 @@ require_once('../db.php');
         Location Name(i.e. box number, customer name, etc): <input type="text" name = "location_name" placeholder = "Search items..." value =
             "<?php echo isset($_GET['location_name']) ? htmlspecialchars($_GET['location_name']) : ''; ?>"></br>
 
-        Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
-        <input type="hidden" name="searched" value="searched">
-        <input type="hidden" name="model_id" value="<?php echo isset($_GET['model_id']) ? htmlspecialchars($_GET['model_id']) : ''; ?>">
-        
-        <button type="submit">Search</button>
+            Loaned By: <input type="text" name="user_name" value="<?php echo isset($_GET['user_name']) ? htmlspecialchars($_GET['user_name']) : ''; ?>"></br>
+            <input type="hidden" name="searched" value="searched">
+            <input type="hidden" name="model_id" value="<?php echo isset($_GET['model_id']) ? htmlspecialchars($_GET['model_id']) : ''; ?>">
+
+            <button type="submit">Search</button>
     </form>
 
 <?php
@@ -43,6 +43,7 @@ require_once('../db.php');
     $user_name = isset($_GET['user_name']) ? $conn->real_escape_string($_GET['user_name']) : '';
 
     $model_id = $_GET["model_id"];
+
 
     $flag = FALSE;
     $model_sql = "SELECT * FROM models WHERE id = '$model_id'";
@@ -104,6 +105,7 @@ require_once('../db.php');
         echo "<td>". $location_array['customer'] ."</td>";
         echo "<td>". $location_array['building'] ."</td>";
 
+        //echo $user_id . '</br>';
         $user_id = $row['user_id'];
         if ($user_id === '0') {
             $user_name = 'Available';
@@ -130,6 +132,10 @@ require_once('../db.php');
         else
             echo "<td>Expired</td>";
 
+
+        //echo $row['user_id'] . '</br>';
+        //echo $user_action . '</br>';
+        
 
          echo "<td>
             <form method='POST' action='loan_item.php'>
