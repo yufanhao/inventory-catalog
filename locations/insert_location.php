@@ -1,22 +1,23 @@
 <html>
-    <form action="" method="POST">
-        Location Type: 
-        <select name="type">
-            <option value="box">Box</option>
-            <option value="cabinet">Cabinet</option>
-            <option value="shelf">Shelf</option>
-            <option value="floor">Floor</option>
-            <option value="cubicle">Cubicle</option>
-            <option value="customer">Customer</option>
-            <option value="building">Building</option>
-            <option value="other">Other</option></select><br>
-        <button type="submit">Next</button>
-    </form> 
-
     <?php
     require_once('../db.php');
     if ($conn->connect_error) {
         die("Connection failed: ". $conn->connect_error);
+    }
+    if (!isset($_POST['type'])) {
+        echo "<form method='POST'>";
+        echo "Location Type: <select name='type'>";
+        echo "<option value='box'>Box</option>";
+        echo "<option value='cabinet'>Cabinet</option>";
+        echo "<option value='shelf'>Shelf</option>";
+        echo "<option value='floor'>Floor</option>";
+        echo "<option value='cubicle'>Cubicle</option>";
+        echo "<option value='customer'>Customer</option>";
+        echo "<option value='building'>Building</option>";
+        echo "<option value='other'>Other</option></select><br>";
+        echo "<button type='submit'>Next</button>";
+        echo "</form>";
+        exit();
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type']) && !isset($_POST['step'])) {
         $type = $_POST["type"];
@@ -119,7 +120,7 @@
             echo "Error: " . $conn->error;
         }
         echo "<form action='../models/view_models.php' method='get'>
-        <button type = 'submit'>Return to Inventory</button>
+            <button type = 'submit'>Return to Inventory</button>
             </form>";
         $conn->close();
     }

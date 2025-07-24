@@ -252,6 +252,10 @@
 
         
          echo "<td class='item_action_group'>
+            <form method='POST' action='move_item.php'>
+                <input type='hidden' name='item_id' value='" . $row["id"] . "'>
+            <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
+
              <form method='POST' action='loan_item.php' class='item_action_button'>
                  <input type='hidden' name='id' value='" . $row['id'] . "'>
                  <input type='hidden' name='user_action' value='" . $user_action . "'>
