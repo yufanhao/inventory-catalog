@@ -132,19 +132,25 @@ require_once('../db.php');
 
 
          echo "<td>
-             <form method='POST' action='loan_item.php'>
-                 <input type='hidden' name='id' value='" . $row['id'] . "'>
-                 <input type='hidden' name='user_action' value='" . $user_action . "'>
-                 <input type='hidden' name='model_id' value='" . $model_id . "'>
-                 <button type='submit' $disabled>". $user_action . "  Item</button>
-             </form>
+            <form method='POST' action='loan_item.php'>
+                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                <input type='hidden' name='user_action' value='" . $user_action . "'>
+                <input type='hidden' name='model_id' value='" . $model_id . "'>
+                <button type='submit' $disabled>". $user_action . "  Item</button>
+            </form>
 
-             <form method='POST' action='insert_item.php'>
+            <form method='POST' action='insert_item.php'>
                 <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <input type='hidden' name='expiration' value='" . $row['expiration'] . "'>
                 <input type='hidden' name='serial_number' value='" . $row['serial_number'] . "'>
                 <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
                 <button type='submit'>Add Item</button>
+            </form>
+            
+            <form method='POST' action='move_item.php'>
+                <input type='hidden' name='item_id' value='" . $row["id"] . "'>
+                <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
+                <button type='submit'>Move Item</button>
             </form>
     
             <form method='POST' action='delete_item.php' onsubmit=\"return confirm('Are you sure you want to delete this item?');\">

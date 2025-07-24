@@ -62,19 +62,6 @@
         echo "</table>";
 
         $conn->close();
-        function getChildLocationIds($conn, $parent_id) {
-            $ids = array();
-            $ids[] = $parent_id;
-
-            $query = "SELECT id FROM locations WHERE parent_id = $parent_id";
-            $result = $conn->query($query);
-
-            while ($row = $result->fetch_assoc()) {
-                $child_id = $row['id'];
-                $ids = array_merge($ids, getChildLocationIds($conn, $child_id));
-            }
-            return $ids;
-        }
         
         ?>
     </body>
