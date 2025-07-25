@@ -282,6 +282,13 @@ if ($item_id) {
             <form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Return to Full Inventory</button><br>
             </form>
+            <?php
+            $model_id = isset($_POST['model_id']) ? intval($_POST['model_id']) : 0;
+            echo "<form method='GET' action='get_item_by_model_id.php'>";
+            echo "<input type='hidden' name='model_id' value='" . htmlspecialchars($model_id) . "'>";
+            echo "<button type='submit'>Return to View Items</button>";
+            echo "</form>";
+            ?>
             
         <?php else: ?>
             <p style="color: red;"><strong>No item specified. Please select an item to move.</strong></p>

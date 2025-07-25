@@ -156,6 +156,7 @@ require_once('../db.php');
             <form method='POST' action='move_item.php'>
                 <input type='hidden' name='item_id' value='" . $row["id"] . "'>
                 <input type='hidden' name='location_id' value='" . $row['location_id'] . "'>
+                <input type='hidden' name='model_id' value='" . $model_id . "'>
                 <button type='submit'>Move Item</button>
             </form>
     
