@@ -1,39 +1,31 @@
-<!-- <html>
+<html>
     <?php
     require_once('../db.php');
     require_once('../functions.php');
 
     $id =  $_POST["id"];
-    $name = $_POST["name"];
+    $expiration = $_POST["expiration"];
     $submitted = $_POST['submitted'];
-    $part_number = $_POST['part_number'];
-    $category = $_POST['category'];
-    $image = $_FILES['image'];
+    $serial_number = $_POST['serial_number'];
+    $model = $_POST['model'];
     
-    $model_sql = "SELECT * FROM models WHERE id = $id";
-    $model_result = $conn->query($model_sql);
+    $item_sql = "SELECT i.id, i.expiration, i.serial_number, m.name as model
+    FROM items i
+    LEFT JOIN models m on m.id = i.model_id
+    WHERE i.id = $id";
     
-    if (isset($_POST['submitted']) && $model_result && $model_result->num_rows > 0) {
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            // If a new image is uploaded, handle the file upload
-            $image_type = $_FILES['image']['type'];
-            $category_id = $conn->query("SELECT id from categories where name = '$category'")->fetch_assoc();
-            $c_id = $category_id['id'];
-            $image_data = $conn->real_escape_string(file_get_contents($_FILES['image']['tmp_name']));
-            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category_id = '$c_id', image = '$image_data', image_type = '$image_type' WHERE id = '$id'";
-
-        } else {
-            // If no new image is uploaded, keep the existing image URL
-            $model = $model_result->fetch_assoc();
-            $image = $model['image'];
+    $item_result = $conn->query($item_sql);
 
 
-            $category_id = $conn->query("SELECT id from categories where name = '$category'")->fetch_assoc();
-            $c_id = $category_id['id'];
-            $sql = "UPDATE models SET name = '$name', part_number = '$part_number', category_id = '$c_id' WHERE id = '$id'";
-        }
+    if (isset($_POST['submitted']) && $item_result && $item_result->num_rows > 0) {
+        $model_id = $conn->query("SELECT id from models where name = '$model'")->fetch_assoc();
+        $m_id = $model_id['id'];
+        //echo $m_id;
+
+        $sql = "UPDATE items SET expiration = '$expiration', serial_number = '$serial_number', model_id = $m_id WHERE id = '$id'";
+        
         if ($conn->query($sql) === TRUE) {
-            echo "Model updated successfully <br>";
+            echo "Item updated successfully <br>";
         } else {
             echo "Error: " . $conn->error;
         }
@@ -41,52 +33,30 @@
                 <button type = 'submit'>Return to Inventory</button>
               </form>";
     }
-    else if ($model_result && $model_result->num_rows > 0) {
-        $model = $model_result->fetch_assoc();
-        $categories = $conn->query("SELECT DISTINCT category FROM models");
-        $model_names = $conn->query("SELECT name FROM models");
-        echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
-        echo "<form method='POST' action='update_model.php' enctype='multipart/form-data'>";
-        echo "Model ID: " . htmlspecialchars($model['id']) . "<br>";
-        echo "Model Name: <select name='name'>";
-        while ($row = $model_names->fetch_assoc()) {
+    else if ($item_result && $item_result->num_rows > 0) {
+        $item = $item_result->fetch_assoc();
+    
+        echo "<form method='POST' action='update_item.php' enctype='multipart/form-data'>";
+        echo "Item ID: " . htmlspecialchars($item['id']) . "<br>";
+        echo "Expiration: <input type='date' name='expiration' value='" . htmlspecialchars($item['expiration']) . "'><br>";
+        echo "Serial Number: <input type='text' name='serial_number' value='" . htmlspecialchars($item['serial_number']) . "'><br>";
+        echo "Model: <select name='model'>";
+        $models = $conn->query("SELECT DISTINCT name FROM models");
+        while ($row = $models->fetch_assoc()) {
             $name = htmlspecialchars($row['name']);
-            $selected = ($row['name'] === $model['name']) ? 'selected' : '';
+            $selected = ($row['name'] === $item['model']) ? 'selected' : '';
             echo "<option value='$name' $selected>$name</option>";
         }
-        echo "</select><br>";
-        echo "Part Number: <input type='text' name='part_number' value='" . htmlspecialchars($model['part_number']) . "'><br>";
-        
-        
-        echo "Category: <select name='category'>";
-        $categories = $conn->query("SELECT DISTINCT * FROM categories ORDER BY name");
-        while ($category = $categories->fetch_assoc()) {
-            echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
-        }
-        echo "</select>";        
-        echo '<input type="submit" formaction="../categories/add_new_category.php" value="New"><br>';
-        echo "Image: <br>";
-        echo '<img src="get_image.php?id=' . $model['id'] . '" width="300" height="300"><br>';
-        echo "New Image: <input type='file' name='image' width='50' height='50'><br>";
-        /*
-        include '../db.php';
-        echo "Category: <select name='category'>";
-        $categories = $conn->query("SELECT DISTINCT * FROM categories ORDER BY name");
-        while ($category = $categories->fetch_assoc()) {
-            echo "<option value='" . htmlspecialchars($category['name']) . "'>" . htmlspecialchars($category['name']) . "</option>";
-        }
-        echo "</select><br>";
-             */
-
-        echo "<input type='hidden' name='id' value='" . htmlspecialchars($model['id']) . "'>";
+        //echo '<input type="submit" formaction="../models/add_new_model.php" value="New"><br>';
+        echo "<input type='hidden' name='id' value='" . htmlspecialchars($item['id']) . "'>";
         echo "<input type='hidden' name='submitted' value='true'><br>";
-        echo "<input type='submit' value='Update Model'></form>";
+        echo "<input type='submit' value='Update Item'></form>";
         echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Cancel and Return to Inventory</button>
               </form>";
     }
     else {
-        echo "Model with ID $id does not exist.";
+        echo "Item with ID $id does not exist.";
         echo "<form action ='../models/view_models.php' method = 'get'>
                 <button type = 'submit'>Cancel and Return to Inventory</button>
               </form>";
@@ -95,4 +65,4 @@
 
     $conn->close();
     ?>
-</html> -->
+</html>

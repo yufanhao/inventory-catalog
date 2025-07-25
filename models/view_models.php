@@ -64,6 +64,7 @@
 
         <?php
         include '../db.php';
+        include('../ui_components/pagination.php');
         $searched = isset($_GET['searched']) ? $conn->real_escape_string($_GET['searched']) : '';
         $name = isset($_GET['name']) ? $conn->real_escape_string($_GET['name']) : '';
         $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : '';
@@ -86,6 +87,22 @@
             $sql = "SELECT * from models ";
         }
         $sql .= "ORDER by name";
+
+        $pagination_ctx = initialize_pagination($conn, $sql);
+
+        // Add LIMIT construct for pagination.
+        $items = $conn->query($selection . $pagination_ctx["pagination_limit"]); 
+
+        // Pagination: Display section, using styles defined at the top of the page.  
+        // construct url parameters, preserve search items. filter out empty key,value pairs.
+        $search_data = array( 
+            "name" => $name,
+            "part_number" => $part_number,
+            "category" => $category,
+            "searched" => $searched
+        );
+
+        display_pagination($pagination_ctx, "view_models.php", $search_data);
 
         $items = $conn->query($sql);
         if (!$items) {
