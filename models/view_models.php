@@ -91,7 +91,7 @@
         $pagination_ctx = initialize_pagination($conn, $sql);
 
         // Add LIMIT construct for pagination.
-        $items = $conn->query($selection . $pagination_ctx["pagination_limit"]); 
+        $items = $conn->query($sql . $pagination_ctx["pagination_limit"]); 
 
         // Pagination: Display section, using styles defined at the top of the page.  
         // construct url parameters, preserve search items. filter out empty key,value pairs.
@@ -104,7 +104,7 @@
 
         display_pagination($pagination_ctx, "view_models.php", $search_data);
 
-        $items = $conn->query($sql);
+        
         if (!$items) {
             die("Query Error: " . $conn->error);
         }
